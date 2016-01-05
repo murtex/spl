@@ -1,11 +1,10 @@
 
-# (la-)tex configuration
+# tex configuration
 SRCDIR="./"
 CONFIGDIR="../config/"
 IMAGEDIR="../images/"
 
-TEXMAIN="main"
-TEXSRC="\def\srcdir{$(SRCDIR)}\def\configdir{$(CONFIGDIR)}\def\imagedir{$(IMAGEDIR)}\input{$(TEXMAIN)}"
+TEXSRC="\def\srcdir{$(SRCDIR)}\def\configdir{$(CONFIGDIR)}\def\imagedir{$(IMAGEDIR)}\input{main}"
 
 # building
 all:
