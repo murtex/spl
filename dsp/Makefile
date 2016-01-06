@@ -8,11 +8,11 @@ TEXSRC="\def\srcdir{$(SRCDIR)}\def\configdir{$(CONFIGDIR)}\def\imagedir{$(IMAGED
 
 # building
 all:
-	pdflatex -jobname slides $(TEXSRC)
-	pdflatex -jobname slides $(TEXSRC)
-	pdflatex -jobname slides $(TEXSRC)
+	pdflatex -jobname dsp_slides $(TEXSRC)
+	pdflatex -jobname dsp_slides $(TEXSRC)
+	pdflatex -jobname dsp_slides $(TEXSRC)
 
 # cleaning
 clean:
-	rm -f slides.*
+	rm -f dsp_slides.*
 
