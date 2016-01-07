@@ -5,9 +5,22 @@
 \begin{frame}
 	\frametitle{Sampling}
 	\begin{itemize}
-		\item continuous signals
-		\item discrete signals
-		\item sampling rate, bits per sample
+		\item \textbf{continuous} signal (normalized amplitude, length $L$ in seconds)
+			\begin{align*}
+				x(t)\in[-1,1],\quad t\in[0,L]
+			\end{align*}
+		\item \textbf{sampling rate} $f_{\textrm S}$ (Audio-CD: $44.1\kilo\hertz$)
+			\begin{align*}
+				t\rightarrow i,\quad i=
+			\end{align*}
+		\item \textbf{bits per sample} (Audio-CD: $16\bit$)
+			\begin{align*}
+				x(t)\rightarrow x_i,\quad x_i=
+			\end{align*}
+		\item \textbf{discrete} signals
+			\begin{align*}
+				x_i\in\mathbb Z,\quad i=1,2,\ldots,N
+			\end{align*}
 		\item sampling theorem
 		\item Nyquist frequency, aliasing
 	\end{itemize}
