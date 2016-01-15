@@ -2,11 +2,27 @@
 	% frequency domain
 \subsection{Frequency domain}
 
+\begin{frame}[fragile]
+	\frametitle{Frequency domain}
+	\begin{itemize}
+		\item \textbf{discrete Fourier transform}, time $\rightarrow$ frequency domain
+			\begin{align*}
+				X_k=\sum_{i=1}^Nx_i\,\ee^{-2\pi\ii\mfrac{(i-1)(k-1)}N}\in\mathbb C,\qquad k\in\{1,\ldots,N\}
+			\end{align*}
+			\begin{code}
+>> Xk = fft( xi );
+			\end{code}
+		\item $k$ is a frequency index just as $i$ is a time index
+	\end{itemize}
+\end{frame}
+
 \begin{frame}
 	\frametitle{Frequency domain}
 	\begin{itemize}
-		\item discrete Fourier transform
-		\item inverse Fourier transform
+		\item \textbf{inverse Fourier transform}, frequency $\rightarrow$ time domain
+			\begin{align*}
+				x_i=\frac1N\sum_{k=1}^NX_k\,\ee^{2\pi\ii\mfrac{(i-1)(k-1)}N}\in\mathbb C,\qquad i\in\{1,\ldots,N\}
+			\end{align*}
 		\item spectrum
 		\item spectral energy/power
 		\item spectral entropy
