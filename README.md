@@ -1,3 +1,3 @@
-Speech processing lecture notes
--------------------------------
+Speech processing using MATLAB
+------------------------------
 
