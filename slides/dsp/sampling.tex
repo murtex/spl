@@ -1,0 +1,34 @@
+
+	% sampling
+\subsection{Sampling}
+
+\begin{frame}
+	\frametitle{Sampling}
+	\begin{itemize}
+		\item \textbf{continuous signal} (normalized magnitude, length $L$ in seconds)
+			\begin{align*}
+				x(t)\in[-1,1],\qquad t\in[0,L]
+			\end{align*}
+		\item \textbf{sampling rate} $f_{\textrm S}$, quantization of time
+			\begin{align*}
+				t\rightarrow t_i=\frac{i-1}{f_{\textrm S}},\qquad i\in\{1,\ldots,N\},\qquad N=\lfloor Lf_{\textrm S}+1\rfloor
+			\end{align*}
+		\item \textbf{bits per sample} $n_{\textrm S}$, quantization of amplitude
+			\begin{align*}
+				x(t)\rightarrow x_i=\left\lfloor2^{n_{\textrm S}-1}x(t_i)\right\rceil
+			\end{align*}
+		\item Audio-CD: $f_{\textrm S}=44.1\kilo\hertz$, $n_{\textrm S}=16\bit$ (TODO: other standards?)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Sampling}
+	\begin{itemize}
+		\item \textbf{example} (\texttt{matlab/sampling.m})
+			\begin{figure}
+				\includegraphics[width=5cm]{images/sampling.eps}
+			\end{figure}
+		\item \textbf{exercise:} Nyquist frequency, aliasing? $\rightarrow$ sampling theorem
+	\end{itemize}
+\end{frame}
+

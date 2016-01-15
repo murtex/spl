@@ -1,0 +1,17 @@
+
+	% code
+\usepackage{fancyvrb}
+
+\newenvironment{code}
+{\SaveVerbatim{tmp}}
+{\endSaveVerbatim
+	\small
+	\par\addvspace{\abovedisplayskip}
+	\flushleft
+	\fboxrule=0pt\fboxsep=0.25em
+	\colorbox{light}{%
+		\makebox[\dimexpr\linewidth-2\fboxsep][l]{\BUseVerbatim{tmp}}}
+	\endflushleft
+	\addvspace{\belowdisplayskip}
+}
+
