@@ -13,7 +13,7 @@ xt = sin( 2*pi*f * t );
 fS = 48; % sampling rate, TEST!
 nS = 3; % bits per sample, TEST!
 
-N = floor( L*fS + 1 ); % number of samples
+N = floor( L*fS ); % number of samples
 i = 1:N; % sample indices
 
 ti = (i-1) / fS; % discrete signal
@@ -31,7 +31,7 @@ for j = 1:numel( t )
 	xr(j) = sum( xi .* h ); % reconstructed amplitude
 end
 
-fR = sum( abs( diff( xr >= 0 ) ) ) / L / 2; % estimate frequency using zero-crossings
+fR = sum( abs( diff( xr >= 0 ) ) ) / L / 2; % estimate frequency using zero-crossings, TODO
 	
 	% plot quantization
 if exist( 'fig_ad', 'var' ) ~= 1 || ~ishandle( fig_ad ) % prepare figure window
