@@ -1,4 +1,4 @@
-clearvars( '-except', 'fig_sampling' );
+clearvars( '-except', 'fig_ad', 'fig_da' );
 
 	% prepare continuous sine signal
 L = 1; % length in seconds
@@ -23,12 +23,18 @@ xi = round( 2^(nS-1) * sin( 2*pi*f * ti ) ) / 2^(nS-1);
 	% the next lines are not important for following the lecture!
 	% -----------------------------------------------------------------------
 	
-	% reconstruct signal, TODO: Whittaker-Shannon interpolation!
+	% reconstruct signal (whittaker-shannon interpolation)
+for j = 1:numel( t )
+	sa = pi * (t(j) - (i-1) / fS) * fS;
+	sa(find( sa == 0)) = 1;
+	h = sin( sa ) ./ sa;
+	xr(j) = sum( xi .* h );
+end
 	
-	% plot sampling
-if exist( 'fig_sampling', 'var' ) ~= 1 || ~ishandle( fig_sampling ) % prepare figure window
-	fig_sampling = figure( ...
-		'Name', 'SAMPLING', ...
+	% plot quantization
+if exist( 'fig_ad', 'var' ) ~= 1 || ~ishandle( fig_ad ) % prepare figure window
+	fig_ad = figure( ...
+		'Name', 'QUANTIZATION', ...
 		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
 		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 20, 'defaultAxesFontWeight', 'bold', ...
 		'defaultAxesNextPlot', 'add', ...
@@ -36,10 +42,10 @@ if exist( 'fig_sampling', 'var' ) ~= 1 || ~ishandle( fig_sampling ) % prepare fi
 		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
 end
 
-figure( fig_sampling ); % set and clear current figure
-clf( fig_sampling );
+figure( fig_ad ); % set and clear current figure
+clf( fig_ad );
 
-title( 'SAMPLING' );
+title( 'QUANTIZATION' );
 
 xlabel( 'time in seconds' );
 ylabel( 'amplitude' );
@@ -58,8 +64,40 @@ legend( ... % show legend
 	{sprintf( 'continuous sine (%.1fHz)', f ), sprintf( 'quantization (%.1fHz, %dbit)', fS, nS )}, ...
 	'Location', 'southeast' );
 
-	% plot reconstruction, TODO!
+	% plot reconstruction
+if exist( 'fig_da', 'var' ) ~= 1 || ~ishandle( fig_da ) % prepare figure window
+	fig_da = figure( ...
+		'Name', 'RECONSTRUCTION', ...
+		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
+		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 20, 'defaultAxesFontWeight', 'bold', ...
+		'defaultAxesNextPlot', 'add', ...
+		'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
+		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
+end
+
+figure( fig_da ); % set and clear current figure
+clf( fig_da );
+
+title( 'RECONSTRUCTION' );
+
+xlabel( 'time in seconds' );
+ylabel( 'amplitude' );
+
+xlim( [0, L] ); % set axes
+ylim( [-1, 1] );
+
+stem( ti, xi, ... % plot discrete signal
+	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
+	'ShowBaseLine', 'off' );
+
+plot( t, xr, ... % plot reconstructed signal
+	'Color', 'blue', 'LineWidth', 2 );
+
+legend( ... % show legend
+	{'quantized signal', 'reconstruction'}, ...
+	'Location', 'southeast' );
 
 	% write image
-print( fig_sampling, 'sampling', '-depsc2' );
+print( fig_ad, 'sampling_ad', '-depsc2' );
+print( fig_da, 'sampling_da', '-depsc2' );
 

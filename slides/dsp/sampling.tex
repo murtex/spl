@@ -24,9 +24,17 @@
 \begin{frame}
 	\frametitle{Sampling}
 	\begin{itemize}
-		\item \textbf{example:} \texttt{matlab/sampling.m} (\TODO{signal reconstruction!})
+		\item \textbf{example:} \texttt{matlab/sampling.m}
 			\begin{figure}
-				\includegraphics[width=5cm]{images/sampling.eps}
+				\centering
+				\begin{subfigure}[t]{0.45\linewidth}
+					\includegraphics[width=\linewidth]{images/sampling_ad.eps}
+					\caption{A/D conversion}
+				\end{subfigure}
+				\begin{subfigure}[t]{0.45\linewidth}
+					\includegraphics[width=\linewidth]{images/sampling_da.eps}
+					\caption{D/A conversion}
+				\end{subfigure}
 			\end{figure}
 		\item \textbf{exercise:} estimate Nyquist frequency and aliasing from reconstruction
 	\end{itemize}
