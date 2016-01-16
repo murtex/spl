@@ -25,11 +25,13 @@ xi = round( 2^(nS-1) * sin( 2*pi*f * ti ) ) / 2^(nS-1);
 	
 	% reconstruct signal (whittaker-shannon interpolation)
 for j = 1:numel( t )
-	sa = pi * (t(j) - (i-1) / fS) * fS;
+	sa = pi * (t(j) - (i-1) / fS) * fS; % sinc function
 	sa(find( sa == 0)) = 1;
 	h = sin( sa ) ./ sa;
-	xr(j) = sum( xi .* h );
+	xr(j) = sum( xi .* h ); % reconstructed amplitude
 end
+
+fR = sum( abs( diff( xr >= 0 ) ) ) / L / 2; % estimate frequency using zero-crossings
 	
 	% plot quantization
 if exist( 'fig_ad', 'var' ) ~= 1 || ~ishandle( fig_ad ) % prepare figure window
@@ -51,7 +53,7 @@ xlabel( 'time in seconds' );
 ylabel( 'amplitude' );
 
 xlim( [0, L] ); % set axes
-ylim( [-1, 1] );
+ylim( [-1, 1] * max( abs( cat( 2, xt, xi, xr ) ) ) * 1.1 );
 
 plot( t, xt, ... % plot continuous signal
 	'Color', 'blue', 'LineWidth', 2 );
@@ -84,7 +86,7 @@ xlabel( 'time in seconds' );
 ylabel( 'amplitude' );
 
 xlim( [0, L] ); % set axes
-ylim( [-1, 1] );
+ylim( [-1, 1] * max( abs( cat( 2, xt, xi, xr ) ) ) * 1.1 );
 
 stem( ti, xi, ... % plot discrete signal
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
@@ -94,7 +96,7 @@ plot( t, xr, ... % plot reconstructed signal
 	'Color', 'blue', 'LineWidth', 2 );
 
 legend( ... % show legend
-	{'quantized signal', 'reconstruction'}, ...
+	{'quantized signal', sprintf( 'reconstruction (~%.1fHz)', fR )}, ...
 	'Location', 'southeast' );
 
 	% write image
