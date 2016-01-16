@@ -23,6 +23,8 @@ xi = round( 2^(nS-1) * sin( 2*pi*f * ti ) ) / 2^(nS-1);
 	% the next lines are not important for following the lecture!
 	% -----------------------------------------------------------------------
 	
+	% reconstruct signal, TODO: Whittaker-Shannon interpolation!
+	
 	% plot sampling
 if exist( 'fig_sampling', 'var' ) ~= 1 || ~ishandle( fig_sampling ) % prepare figure window
 	fig_sampling = figure( ...
@@ -55,6 +57,8 @@ stem( ti, xi, ... % plot discrete signal
 legend( ... % show legend
 	{sprintf( 'continuous sine (%.1fHz)', f ), sprintf( 'quantization (%.1fHz, %dbit)', fS, nS )}, ...
 	'Location', 'southeast' );
+
+	% plot reconstruction, TODO!
 
 	% write image
 print( fig_sampling, 'sampling', '-depsc2' );
