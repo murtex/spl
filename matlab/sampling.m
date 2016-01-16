@@ -20,7 +20,7 @@ ti = (i-1) / fS; % discrete signal
 xi = round( 2^(nS-1) * sin( 2*pi*f * ti ) ) / 2^(nS-1);
 
 	% -----------------------------------------------------------------------
-	% the following lines are not important for the lecture!
+	% the next lines are not important for following the lecture!
 	% -----------------------------------------------------------------------
 	
 	% plot sampling
