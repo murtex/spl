@@ -1,7 +1,7 @@
 clearvars( '-except', 'fig_ad', 'fig_da' );
 
 	% prepare continuous sine signal
-L = 1; % length in seconds
+L = 2; % length in seconds
 
 f = 1; % sine frequency
 dt = 1/1000; % temporal resolution
