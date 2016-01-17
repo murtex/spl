@@ -11,4 +11,5 @@ all:
 # cleaning
 clean:
 	rm -f slides.*
+	rm -f matlab.zip
 
