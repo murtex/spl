@@ -12,17 +12,37 @@
 			\begin{code}
 >> Xk = fft( xi );
 			\end{code}
-		\item $k$ is a frequency index just as $i$ is a time index
+		\item $k$ is a \textbf{frequency index} as $i$ was a \textbf{time index}
+			\begin{align*}
+				k\rightarrow f_k=\frac{k-1}Nf_{\textrm S}
+			\end{align*}
+			\begin{code}
+>> fk = (0:N-1) / N * fS;
+			\end{code}
+		\item frequencies beyond Nyquist frequency are \textbf{negative frequencies}
+			\begin{align*}
+				f_k\rightarrow f_k=\begin{cases}f_k-f_{\textrm S}&\textrm{if $f_k\ge f_{\textrm{Ny}}$}\\f_k&\textrm{otherwise}\end{cases}
+			\end{align*}
+			\begin{code}
+>> fk(fk >= fNy) = fk(fk >= fNy) - fS;
+			\end{code}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Frequency domain}
+	\begin{itemize}
+		\item one-sided \textbf{power spectrum}
+			\begin{code}
+>> Pk = Xk .* conj( Xk );
+			\end{code}
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Frequency domain}
 	\begin{itemize}
-		\item \textbf{inverse Fourier transform}, frequency $\rightarrow$ time domain
-			\begin{align*}
-				x_i=\frac1N\sum_{k=1}^NX_k\,\ee^{2\pi\ii\mfrac{(i-1)(k-1)}N}\in\mathbb C,\qquad i\in\{1,\ldots,N\}
-			\end{align*}
+		\item inverse Fourier transform
 		\item spectrum
 		\item spectral energy/power
 		\item spectral entropy
