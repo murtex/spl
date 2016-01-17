@@ -1,4 +1,40 @@
 
-	% beamer class configuration
+	% fonts
 \usefonttheme{serif}
+
+\setbeamerfont{frametitle}{size=\Large}
+\setbeamerfont{footline}{size=\scriptsize}
+
+	% colors
+\usecolortheme[RGB={41, 92, 124}]{structure} % cold
+%\usecolortheme[RGB={53, 98, 56}]{structure} % warm
+%\usecolortheme[RGB={16, 72, 113}]{structure} % uni potsdam
+
+\setbeamercolor{palette primary}{use=structure, fg=white, bg=structure.fg!100!white} % general colors
+\setbeamercolor{palette secondary}{use=structure, fg=white, bg=structure.fg!95!white}
+\setbeamercolor{palette tertiary}{use=structure, fg=white, bg=structure.fg!90!white}
+\setbeamercolor{palette quaternary}{use=structure, fg=white, bg=structure.fg!85!white}
+
+\setbeamercolor{title}{parent=palette secondary} % specific colors
+\setbeamercolor{titlelike}{parent=palette secondary}
+
+	% header and footer
+\useoutertheme{infolines}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+
+	% specific elements
+\setbeamertemplate{frametitle}{
+	\nointerlineskip
+	\begin{beamercolorbox}[sep=1.25ex, ht=1.65em, wd=\paperwidth]{frametitle}
+		\strut\insertframetitle\strut
+		\vskip-0.9ex%
+	\end{beamercolorbox}}
+
+\setbeamertemplate{footline}{
+	\begin{beamercolorbox}[ht=2.25ex, wd=\paperwidth, dp=1ex, right]{frametitle}
+		\usebeamerfont{date in head/foot}
+		\insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
+	\end{beamercolorbox}}
 
