@@ -13,10 +13,10 @@ xt = sin( 2*pi*f * t );
 fS = 48; % sampling rate, TEST!
 nS = 3; % bits per sample, TEST!
 
-N = floor( L*fS ); % number of samples
-i = 1:N; % sample indices
+N = floor( L * fS ); % number of samples
+i = (1:N); % sample indices
 
-ti = (i-1) / fS; % discrete signal
+ti = (i - 1) / fS; % discrete signal
 xi = round( 2^(nS-1) * sin( 2*pi*f * ti ) ) / 2^(nS-1);
 
 	% -----------------------------------------------------------------------
