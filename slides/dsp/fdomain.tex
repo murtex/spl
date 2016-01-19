@@ -5,14 +5,14 @@
 \begin{frame}[fragile]
 	\frametitle{Frequency domain}
 	\begin{itemize}
-		\item \textbf{discrete Fourier transform}, time $\rightarrow$ frequency domain
+		\item \textbf{discrete Fourier transform}, time domain $\rightarrow$ frequency domain
 			\begin{align*}
 				X_k=\sum_{i=1}^Nx_i\,\ee^{-2\pi\ii\mfrac{(i-1)(k-1)}N}\in\mathbb C,\qquad k\in\{1,\ldots,N\}
 			\end{align*}
 			\begin{code}
 >> Xk = fft( xi );
 			\end{code}
-		\item $k$ is a \textbf{frequency index} as $i$ was a \textbf{time index}
+		\item $k$ is a \textbf{frequency index} (as $i$ was a time index)
 			\begin{align*}
 				k\rightarrow f_k=\frac{k-1}Nf_{\textrm S}
 			\end{align*}
@@ -32,7 +32,7 @@
 \begin{frame}[fragile]
 	\frametitle{Frequency domain}
 	\begin{itemize}
-		\item one-sided \textbf{power spectrum}
+		\item \textbf{one-sided power spectrum}
 			\begin{code}
 >> Pk = Xk .* conj( Xk );
 			\end{code}

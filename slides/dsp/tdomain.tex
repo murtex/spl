@@ -10,9 +10,9 @@
 				E=\sum_{i=1}^Nx_i^2,\qquad P=\frac1N\sum_{i=1}^Nx_i^2,\qquad\mathit{RMS}=\sqrt{\frac1N\sum_{i=1}^Nx_i^2}
 			\end{align*}
 			\begin{code}
->> E = sum( xi .* xi );
->> P = mean( xi .* xi );
->> RMS = sqrt( mean( xi .* xi ) );
+>> E = sum( xi .* xi ); \color[medium]% total energy
+>> P = mean( xi .* xi ); \color[medium]% average power
+>> RMS = sqrt( mean( xi .* xi ) ); \color[medium]% root mean square
 			\end{code}
 		\item \textbf{decibel full scale}, different for \textbf{power-} and \textbf{magnitude-like} quantities
 			\begin{align*}
