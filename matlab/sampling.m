@@ -1,7 +1,7 @@
-clearvars( '-except', 'fig_ad', 'fig_da' );
+clearvars( '-except', '-regexp', '^fig\d*$' );
 
 	% -----------------------------------------------------------------------
-	% set up a continuous test signal (sine with frequency f and length L)
+	% a continuous test signal (sine with frequency f and length L)
 	% -----------------------------------------------------------------------
 f = 1;
 L = 1;
@@ -36,12 +36,11 @@ end
 fR = sum( abs( diff( xr >= 0 ) ) ) / L / 2; % estimate frequency using zero-crossings, TODO
 
 	% -----------------------------------------------------------------------
-	% plot A/D conversion figure
+	% plot A/D conversion
 	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
 	% -----------------------------------------------------------------------
-if exist( 'fig_ad', 'var' ) ~= 1 || ~ishandle( fig_ad ) % prepare figure window
-	fig_ad = figure( ...
-		'Name', 'A/D CONVERSION', ...
+if exist( 'fig1', 'var' ) ~= 1 || ~ishandle( fig1 ) % prepare figure window
+	fig1 = figure( ...
 		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
 		'PaperPosition', [0, 0, 8, 6], ...
 		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 20, 'defaultAxesFontWeight', 'bold', ...
@@ -50,10 +49,11 @@ if exist( 'fig_ad', 'var' ) ~= 1 || ~ishandle( fig_ad ) % prepare figure window
 		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
 end
 
-figure( fig_ad ); % set and clear current figure
-clf( fig_ad );
+figure( fig1 ); % set and clear current figure
+clf( fig1 );
 
-title( 'A/D CONVERSION' ); % set labels
+set( fig1, 'Name', 'A/D CONVERSION' ); % set labels
+title( get( fig1, 'Name' ) );
 
 xlabel( 'time in seconds' );
 ylabel( 'amplitude' );
@@ -72,15 +72,12 @@ legend( ... % show legend
 	{sprintf( 'continuous sine (%.1fHz)', f ), sprintf( 'quantization (%.1fHz, %dbit)', fS, nS )}, ...
 	'Location', 'southeast' );
 	
-print( fig_ad, 'sampling_ad', '-depsc2' ); % write figure
-
 	% -----------------------------------------------------------------------
-	% plot D/A conversion figure
+	% plot D/A conversion
 	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
 	% -----------------------------------------------------------------------
-if exist( 'fig_da', 'var' ) ~= 1 || ~ishandle( fig_da ) % prepare figure window
-	fig_da = figure( ...
-		'Name', 'D/A CONVERSION', ...
+if exist( 'fig2', 'var' ) ~= 1 || ~ishandle( fig2 ) % prepare figure window
+	fig2 = figure( ...
 		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
 		'PaperPosition', [0, 0, 8, 6], ...
 		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 20, 'defaultAxesFontWeight', 'bold', ...
@@ -89,10 +86,11 @@ if exist( 'fig_da', 'var' ) ~= 1 || ~ishandle( fig_da ) % prepare figure window
 		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
 end
 
-figure( fig_da ); % set and clear current figure
-clf( fig_da );
+figure( fig2 ); % set and clear current figure
+clf( fig2 );
 
-title( 'D/A CONVERSION' ); % set labels
+set( fig2, 'Name', 'D/A CONVERSION' ); % set labels
+title( get( fig2, 'Name' ) );
 
 xlabel( 'time in seconds' );
 ylabel( 'amplitude' );
@@ -111,5 +109,10 @@ legend( ... % show legend
 	{'quantized signal', sprintf( 'reconstruction (~%.1fHz)', fR )}, ...
 	'Location', 'southeast' );
 
-print( fig_da, 'sampling_da', '-depsc2' ); % write figure
+	% -----------------------------------------------------------------------
+	% write plot images
+	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
+	% -----------------------------------------------------------------------
+print( fig1, 'sampling_ad', '-depsc2' );
+print( fig2, 'sampling_da', '-depsc2' );
 
