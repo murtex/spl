@@ -10,21 +10,21 @@
 				X_k=\sum_{i=1}^Nx_i\,\ee^{-2\pi\ii\mfrac{(i-1)(k-1)}N}\in\mathbb C,\qquad k\in\{1,\ldots,N\}
 			\end{align*}
 			\begin{code}
->> Xk = fft( xi );
+>> Xk = fft( xi ) / N; \color[medium]% complex Fourier coefficients
 			\end{code}
 		\item $k$ is a \textbf{frequency index} (as $i$ was a time index)
 			\begin{align*}
 				k\rightarrow f_k=\frac{k-1}Nf_{\textrm S}
 			\end{align*}
 			\begin{code}
->> fk = (0:N-1) / N * fS;
+>> fk = (0:N-1) / N * fS; \color[medium]% frequency values
 			\end{code}
 		\item frequencies beyond Nyquist frequency are \textbf{negative frequencies}
 			\begin{align*}
-				f_k\rightarrow f_k=\begin{cases}f_k-f_{\textrm S}&\textrm{if $f_k\ge f_{\textrm{Ny}}$}\\f_k&\textrm{otherwise}\end{cases}
+				f_k\rightarrow f_k=\begin{cases}f_k-f_{\textrm S}&\textrm{if $f_k>f_{\textrm{Ny}}$}\\f_k&\textrm{otherwise}\end{cases}
 			\end{align*}
 			\begin{code}
->> fk(fk >= fNy) = fk(fk >= fNy) - fS;
+>> fk(fk > fNy) = fk(fk > fNy) - fS; \color[medium]% imply negative frequencies
 			\end{code}
 	\end{itemize}
 \end{frame}
@@ -32,10 +32,18 @@
 \begin{frame}[fragile]
 	\frametitle{Frequency domain}
 	\begin{itemize}
-		\item \textbf{one-sided power spectrum}
-			\begin{code}
->> Pk = Xk .* conj( Xk );
-			\end{code}
+		\item \textbf{power spectral density} (also known as \textbf{power spectrum})
+		\item \textbf{example: }\texttt{matlab/spectrum.m}
+			\begin{figure}
+				\centering
+				\begin{subfigure}[t]{0.48\linewidth}
+					\includegraphics[width=\linewidth]{images/fdomain_decomp.eps}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[t]{0.48\linewidth}
+					\includegraphics[width=\linewidth]{images/fdomain_powspec.eps}
+				\end{subfigure}
+			\end{figure}
 	\end{itemize}
 \end{frame}
 
