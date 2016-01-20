@@ -32,14 +32,14 @@
 \begin{frame}[fragile]
 	\frametitle{Frequency domain}
 	\begin{itemize}
-		\item \textbf{power spectral density} (PSD, also known as \textbf{power spectrum})
+		\item \textbf{power spectral density} (also known as \textbf{power spectrum})
 			\begin{align*}
 				P_k=\lvert X_k\rvert^2\in\mathbb R\qquad\Leftarrow\qquad\sum_{k=1}^NP_k=P
 			\end{align*}
 			\begin{code}
 >> Pk = abs( Xk ) .^ 2; \color{medium}% power spectral density
 			\end{code}
-		\item \textbf{real valued} $x_i$
+		\item \textbf{real signals} ($x_i\in\mathbb R$)
 			\begin{code}
 >> Pk(fk < 0) = []; \color{medium}% remove negative frequency components
 >> fk(fk < 0) = [];

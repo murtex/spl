@@ -27,10 +27,10 @@ fk(fk > fNy) = fk(fk > fNy) - fS; % imply negative frequencies
 	% -----------------------------------------------------------------------
 Pk = abs( Xk );
 
-%Pk = abs( Xk ) .^ 2;
+Pk = abs( Xk ) .^ 2;
 
-%Pk(fk < 0) = []; % remove negative frequency components
-%fk(fk < 0) = [];
+Pk(fk < 0) = []; % remove negative frequency components
+fk(fk < 0) = [];
 
 	% -----------------------------------------------------------------------
 	% plot Fourier decomposition
