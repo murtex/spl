@@ -10,22 +10,22 @@
 				x(t)\in[-1,1],\qquad t\in[0,L]
 			\end{align*}
 			\begin{code}
->> x = @( t ) sin( 2*pi*f * t ); \color[medium]% continuous sine with frequency f
+>> x = @( t ) sin( 2*pi*f * t ); \color{medium}% continuous sine with frequency f
 			\end{code}
 		\item \textbf{sampling rate} $f_{\textrm S}$, quantization of time
 			\begin{align*}
 				t\rightarrow t_i=\frac{i-1}{f_{\textrm S}},\qquad i\in\{1,\ldots,N\},\qquad N=\lfloor Lf_{\textrm S}\rfloor
 			\end{align*}
 			\begin{code}
->> N = floor( L * fS );
->> ti = (0:N-1) / fS; \color[medium]% quantized time values
+>> N = floor( L * fS ); \color{medium}% number of samples
+>> ti = (0:N-1) / fS; \color{medium}% quantized time values
 			\end{code}
 		\item \textbf{bits per sample} $n_{\textrm S}$, quantization of amplitude
 			\begin{align*}
 				x(t)\rightarrow x_i=\frac{\lfloor2^{n_{\textrm S}-1}x(t_i)\rceil}{2^{n_{\textrm S}-1}}
 			\end{align*}
 			\begin{code}
->> xi = round( 2^(nS-1) * x( ti ) ) / 2^(nS-1); \color[medium]% quantized amplitudes
+>> xi = round( 2^(nS-1) * x( ti ) ) / 2^(nS-1); \color{medium}% quantized amplitudes
 			\end{code}
 	\end{itemize}
 \end{frame}
@@ -33,7 +33,7 @@
 \begin{frame}
 	\frametitle{Sampling}
 	\begin{itemize}
-		\item \textbf{example: }\texttt{matlab/sampling.m}
+		\item \textbf{example:} \texttt{matlab/sampling.m}
 			\begin{figure}
 				\centering
 				\begin{subfigure}[t]{0.48\linewidth}

@@ -14,7 +14,7 @@ x = @( t ) sin( 2*pi*f * t ); % continuous sine with frequency f
 fS = 48; % sampling rate, EXERCISE!
 nS = 3; % bits per sample, EXERCISE!
 
-N = floor( L * fS );
+N = floor( L * fS ); % number of samples
 ti = (0:N-1) / fS; % quantized time values
 xi = round( 2^(nS-1) * x( ti ) ) / 2^(nS-1); % quantized amplitudes
 
