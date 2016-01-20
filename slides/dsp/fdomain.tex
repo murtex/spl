@@ -10,21 +10,21 @@
 				X_k=\sum_{i=1}^Nx_i\,\ee^{-2\pi\ii\mfrac{(i-1)(k-1)}N}\in\mathbb C,\qquad k\in\{1,\ldots,N\}
 			\end{align*}
 			\begin{code}
->> Xk = fft( xi ) / N; \color[medium]% complex Fourier coefficients
+>> Xk = fft( xi ) / N; \color{medium}% complex Fourier coefficients
 			\end{code}
 		\item $k$ is a \textbf{frequency index} (as $i$ was a time index)
 			\begin{align*}
 				k\rightarrow f_k=\frac{k-1}Nf_{\textrm S}
 			\end{align*}
 			\begin{code}
->> fk = (0:N-1) / N * fS; \color[medium]% frequency values
+>> fk = (0:N-1) / N * fS; \color{medium}% frequency values
 			\end{code}
 		\item frequencies beyond Nyquist frequency are \textbf{negative frequencies}
 			\begin{align*}
 				f_k\rightarrow f_k=\begin{cases}f_k-f_{\textrm S}&\textrm{if $f_k>f_{\textrm{Ny}}$}\\f_k&\textrm{otherwise}\end{cases}
 			\end{align*}
 			\begin{code}
->> fk(fk > fNy) = fk(fk > fNy) - fS; \color[medium]% imply negative frequencies
+>> fk(fk > fNy) = fk(fk > fNy) - fS; \color{medium}% imply negative frequencies
 			\end{code}
 	\end{itemize}
 \end{frame}
@@ -32,8 +32,25 @@
 \begin{frame}[fragile]
 	\frametitle{Frequency domain}
 	\begin{itemize}
-		\item \textbf{power spectral density} (also known as \textbf{power spectrum})
-		\item \textbf{example: }\texttt{matlab/spectrum.m}
+		\item \textbf{power spectral density} (PSD, also known as \textbf{power spectrum})
+			\begin{align*}
+				P_k=\lvert X_k\rvert^2\in\mathbb R\qquad\Leftarrow\qquad\sum_{k=1}^NP_k=P
+			\end{align*}
+			\begin{code}
+>> Pk = abs( Xk ) .^ 2; \color{medium}% power spectral density
+			\end{code}
+		\item \textbf{real valued} $x_i$
+			\begin{code}
+>> Pk(fk < 0) = []; \color{medium}% remove negative frequency components
+>> fk(fk < 0) = [];
+			\end{code}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Frequency domain}
+	\begin{itemize}
+		\item \textbf{example:} \texttt{matlab/fdomain.m}
 			\begin{figure}
 				\centering
 				\begin{subfigure}[t]{0.48\linewidth}
@@ -50,11 +67,8 @@
 \begin{frame}
 	\frametitle{Frequency domain}
 	\begin{itemize}
-		\item inverse Fourier transform
-		\item spectrum
-		\item spectral energy/power
 		\item spectral entropy
-		\item Plancherel/Parseval theorem
+		\item inverse Fourier transform
 	\end{itemize}
 \end{frame}
 

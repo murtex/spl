@@ -23,6 +23,16 @@ fk = (0:N-1) / N * fS; % frequency values
 fk(fk > fNy) = fk(fk > fNy) - fS; % imply negative frequencies
 
 	% -----------------------------------------------------------------------
+	% compute the power spectral density (aka power spectrum)
+	% -----------------------------------------------------------------------
+Pk = abs( Xk );
+
+%Pk = abs( Xk ) .^ 2;
+
+%Pk(fk < 0) = []; % remove negative frequency components
+%fk(fk < 0) = [];
+
+	% -----------------------------------------------------------------------
 	% plot Fourier decomposition
 	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
 	% -----------------------------------------------------------------------
@@ -51,6 +61,9 @@ stem( ti, xi, ... % plot discrete signal
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
 	'ShowBaseLine', 'off' );
 
+legend( {sprintf( 'square wave (%.1fHz, @%.1fHz)', f, fS )}, ...
+	'Location', 'southeast' );
+
 	% -----------------------------------------------------------------------
 	% plot power spectrum
 	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
@@ -74,15 +87,15 @@ title( get( fig2, 'Name' ) );
 xlabel( 'frequency in hertz' );
 ylabel( 'power' );
 
-xlim( [-fNy, fNy] );
+xlim( [-fS, fS] / 2 ); % set axes
 
-stem( fk, abs( Xk ), ... % plot discrete spectrum
+stem( fk, Pk, ... % plot power spectrum
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
 	'ShowBaseLine', 'off' );
 
 	% DEBUG
 pow1 = mean( xi .* xi )
-pow2 = sum( abs( Xk ) )
+pow2 = sum( Pk )
 
 	% -----------------------------------------------------------------------
 	% write plot images
