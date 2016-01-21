@@ -39,10 +39,16 @@
 			\begin{code}
 >> Pk = abs( Xk ) .^ 2; \color{medium}% power spectral density
 			\end{code}
-		\item \textbf{real signals} ($x_i\in\mathbb R$)
+		\item \textbf{real valued signals} ($x_i\in\mathbb R$) imply a special symmetry
+			\begin{align*}
+				X_{f_k}=X_{-f_k}^*\qquad\Rightarrow\qquad P_{f_k}=P_{-f_k}
+			\end{align*}
+		\item \textbf{one-sided spectrum}
 			\begin{code}
 >> Pk(fk < 0) = []; \color{medium}% remove negative frequency components
 >> fk(fk < 0) = [];
+>> Pk(2:end) = 2 * Pk(2:end); \color{medium}% rescale to match total power
+>> Xk = [sqrt( Pk(1) ), 2 * sqrt( Pk(2:end) / 2 )];
 			\end{code}
 	\end{itemize}
 \end{frame}
@@ -53,11 +59,11 @@
 		\item \textbf{example:} \texttt{matlab/fdomain.m}
 			\begin{figure}
 				\centering
-				\begin{subfigure}[t]{0.48\linewidth}
+				\begin{subfigure}[c]{0.48\linewidth}
 					\includegraphics[width=\linewidth]{images/fdomain_decomp.eps}
 				\end{subfigure}
 				\hspace{0.01\linewidth}
-				\begin{subfigure}[t]{0.48\linewidth}
+				\begin{subfigure}[c]{0.48\linewidth}
 					\includegraphics[width=\linewidth]{images/fdomain_powspec.eps}
 				\end{subfigure}
 			\end{figure}

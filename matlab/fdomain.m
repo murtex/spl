@@ -4,7 +4,7 @@ clearvars( '-except', '-regexp', '^fig\d*$' );
 	% a discrete test signal (square wave with frequency f and length L)
 	% -----------------------------------------------------------------------
 f = 1;
-L = 1;
+L = 1; % length in seconds, EXERCISE!
 
 fS = 48; % sampling rate, EXERCISE!
 N = floor( L * fS );
@@ -20,17 +20,30 @@ fNy = fS / 2; % Nyquist frequency
 Xk = fft( xi ) / N; % complex Fourier coefficients
 
 fk = (0:N-1) / N * fS; % frequency values
-fk(fk > fNy) = fk(fk > fNy) - fS; % imply negative frequencies
+fk(fk >= fNy) = fk(fk >= fNy) - fS; % imply negative frequencies
 
 	% -----------------------------------------------------------------------
 	% compute the power spectral density (aka power spectrum)
 	% -----------------------------------------------------------------------
-Pk = abs( Xk );
-
 Pk = abs( Xk ) .^ 2;
 
 Pk(fk < 0) = []; % remove negative frequency components
 fk(fk < 0) = [];
+
+Pk(2:end) = 2 * Pk(2:end); % rescale to match total power
+Xk = [sqrt( Pk(1) ), 2 * sqrt( Pk(2:end) / 2 )];
+
+	% -----------------------------------------------------------------------
+	% re-composite signal from spectrum
+	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
+	% -----------------------------------------------------------------------
+dt = 1 / 2000; % temporal resolution
+t = linspace( 0, L, L / dt );
+
+xr = zeros( 1, numel( t ) );
+for j = 1:numel( Xk )
+	xr = xr + Xk(j) * sin( 2*pi*fk(j) * t );
+end
 
 	% -----------------------------------------------------------------------
 	% plot Fourier decomposition
@@ -56,12 +69,16 @@ xlabel( 'time in seconds' );
 ylabel( 'amplitude' );
 
 xlim( [0, L] ); % set axes
+ylim( [-1, 1] * max( abs( cat( 2, xi, xr ) ) ) * 1.1 );
 
 stem( ti, xi, ... % plot discrete signal
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
 	'ShowBaseLine', 'off' );
 
-legend( {sprintf( 'square wave (%.1fHz, @%.1fHz)', f, fS )}, ...
+plot( t, xr, ... % plot recomposed signal
+	'Color', 'blue', 'LineWidth', 2 );
+
+legend( {sprintf( 'square wave (%.1fHz, @%.1fHz)', f, fS ), 'recomposition from spectrum'}, ...
 	'Location', 'southeast' );
 
 	% -----------------------------------------------------------------------
@@ -87,15 +104,12 @@ title( get( fig2, 'Name' ) );
 xlabel( 'frequency in hertz' );
 ylabel( 'power' );
 
-xlim( [-fS, fS] / 2 ); % set axes
+xlim( [0, fNy] ); % set axes
+ylim( [0, 1] * max( Pk ) * 1.1 );
 
 stem( fk, Pk, ... % plot power spectrum
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
 	'ShowBaseLine', 'off' );
-
-	% DEBUG
-pow1 = mean( xi .* xi )
-pow2 = sum( Pk )
 
 	% -----------------------------------------------------------------------
 	% write plot images
