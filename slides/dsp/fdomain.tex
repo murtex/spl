@@ -43,13 +43,17 @@
 			\begin{align*}
 				X_{f_k}=X_{-f_k}^*\qquad\Rightarrow\qquad P_{f_k}=P_{-f_k}
 			\end{align*}
-		\item \textbf{one-sided spectrum}
+		\item restrict to \textbf{one-sided spectrum}
 			\begin{code}
 >> Pk(fk < 0) = []; \color{medium}% remove negative frequency components
 >> fk(fk < 0) = [];
 >> Pk(2:end) = 2 * Pk(2:end); \color{medium}% rescale to match total power
 >> Xk = [sqrt( Pk(1) ), 2 * sqrt( Pk(2:end) / 2 )];
 			\end{code}
+		\item $X_1$ is \textbf{DC offset}, $X_{k>1}$ are \textbf{contributions of sines} with frequencies $f_{k>1}$
+			\begin{align*}
+				x(t)=X_1+\sum_{k>1}X_k\sin(2\pi f_kt)
+			\end{align*}
 	\end{itemize}
 \end{frame}
 

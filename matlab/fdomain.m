@@ -40,8 +40,8 @@ Xk = [sqrt( Pk(1) ), 2 * sqrt( Pk(2:end) / 2 )];
 dt = 1 / 2000; % temporal resolution
 t = linspace( 0, L, L / dt );
 
-xr = zeros( 1, numel( t ) );
-for j = 1:numel( Xk )
+xr = Xk(1) * ones( 1, numel( t ) );
+for j = 2:numel( Xk )
 	xr = xr + Xk(j) * sin( 2*pi*fk(j) * t );
 end
 
