@@ -2,9 +2,21 @@
 	% noise
 \subsection{Noise}
 
-\begin{frame}
+\begin{frame}[fragile]
 	\frametitle{Noise}
 	\begin{itemize}
+		\item \textbf{spectral flatness measure}
+			\begin{align*}
+				\mathit{SFM}=\ldots
+			\end{align*}
+		\item \textbf{spectral entropy} using probability densities $p_k$ and skipping constant DC
+			\begin{align*}
+				H=-\sum_{k>1}p_k\log(p_k),\qquad p_k=\frac{P_k}{\sum_{k>1}P_k}
+			\end{align*}
+			\begin{code}
+>> pk = Pk(2:end) / sum( Pk(2:end) ); \color{medium}% probability densities
+>> H = -sum( log2( pk .^ pk ) ); \color{medium}% entropy in bits
+			\end{code}
 		\item additive noise
 		\item signal-to-noise ratio
 		\item spectral subtraction
