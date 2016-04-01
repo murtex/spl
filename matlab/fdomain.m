@@ -105,7 +105,8 @@ xlabel( 'frequency in hertz' );
 ylabel( 'power' );
 
 xlim( [0, fNy] ); % set axes
-ylim( [0, 1] * max( Pk ) * 1.1 );
+%ylim( [0, 1] * max( Pk ) * 1.1 );
+ylim( [0, 1] * 1.1 );
 
 stem( fk, Pk, ... % plot power spectrum
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
