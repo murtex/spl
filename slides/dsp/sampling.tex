@@ -7,14 +7,14 @@
 	\begin{itemize}
 		\item \textbf{continuous signal} (normalized magnitude, length $L$ in seconds)
 			\begin{align*}
-				x(t)\in[-1,1],\qquad t\in[0,L]
+				x(t)\in[-1,1]\quad\textrm{with}\quad t\in[0,L]
 			\end{align*}
 			\begin{code}
 >> x = @( t ) sin( 2*pi*f * t ); \color{medium}% continuous sine with frequency f
 			\end{code}
 		\item \textbf{sampling rate} $f_{\textrm S}$, quantization of time
 			\begin{align*}
-				t\rightarrow t_i=\frac{i-1}{f_{\textrm S}},\qquad i\in\{1,\ldots,N\},\qquad N=\lfloor Lf_{\textrm S}\rfloor
+				t\rightarrow t_i=\frac{i-1}{f_{\textrm S}}\quad\textrm{with}\quad i\in\{1,\ldots,N\}\quad\textrm{and}\quad N=\lfloor Lf_{\textrm S}\rfloor
 			\end{align*}
 			\begin{code}
 >> N = floor( L * fS ); \color{medium}% number of samples
@@ -37,11 +37,11 @@
 			\begin{figure}
 				\centering
 				\begin{subfigure}[c]{0.48\linewidth}
-					\includegraphics[width=\linewidth]{images/sampling_ad.eps}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/sampling_ad.eps}}
 				\end{subfigure}
 				\hspace{0.01\linewidth}
 				\begin{subfigure}[c]{0.48\linewidth}
-					\includegraphics[width=\linewidth]{images/sampling_da.eps}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/sampling_da.eps}}
 				\end{subfigure}
 			\end{figure}
 		\item \textbf{exercise:} verify from reconstruction that \textbf{Nyquist frequency} holds

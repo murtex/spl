@@ -11,7 +11,7 @@
 			\end{align*}
 		\item \textbf{spectral entropy} using probability densities $p_k$ and skipping constant DC
 			\begin{align*}
-				H=-\sum_{k>1}p_k\log(p_k),\qquad p_k=\frac{P_k}{\sum_{k>1}P_k}
+				H=-\sum_{k>1}p_k\log(p_k)\quad\textrm{with}\quad p_k=\frac{P_k}{\sum_{k>1}P_k}
 			\end{align*}
 			\begin{code}
 >> pk = Pk(2:end) / sum( Pk(2:end) ); \color{medium}% probability densities
