@@ -5,12 +5,12 @@ clearvars( '-except', '-regexp', '^fig\d*$' );
 	% -----------------------------------------------------------------------
 fS = 1000; % sampling rate
 
-order = 2; % filter order
+n = 2; % filter order
 cuthigh = 100; % cutoff frequencies
 cutlow = 350;
 
-[blow, alow] = butter( order, cutlow / (fS/2), 'low' ); % filter coefficients
-[bhigh, ahigh] = butter( order, cuthigh / (fS/2), 'high' );
+[blow, alow] = butter( n, cutlow / (fS/2), 'low' ); % filter coefficients
+[bhigh, ahigh] = butter( n, cuthigh / (fS/2), 'high' );
 
 	% -----------------------------------------------------------------------
 	% get filter responses
@@ -51,7 +51,7 @@ plot( [1, 1] * cuthigh, get( gca(), 'XLim' ), ... % cutoff frequency
 	'Color', 'red', 'Linewidth', 2, 'LineStyle', '--' );
 
 hl = legend( ... % show legend
-	{sprintf( 'response (order: %d)', order ), sprintf( 'cutoff frequency (%.0fHz)', cuthigh )}, ...
+	{sprintf( 'response (order: %d)', n ), sprintf( 'cutoff frequency (%.0fHz)', cuthigh )}, ...
 	'Location', 'southeast' );
 set( hl, 'Color', [0.9825, 0.9825, 0.9825] );
 	
@@ -88,7 +88,7 @@ plot( [1, 1] * cutlow, get( gca(), 'XLim' ), ... % cutoff frequency
 	'Color', 'red', 'Linewidth', 2, 'LineStyle', '--' );
 
 hl = legend( ... % show legend
-	{sprintf( 'response (order: %d)', order ), sprintf( 'cutoff frequency (%.0fHz)', cutlow )}, ...
+	{sprintf( 'response (order: %d)', n ), sprintf( 'cutoff frequency (%.0fHz)', cutlow )}, ...
 	'Location', 'southwest' );
 set( hl, 'Color', [0.9825, 0.9825, 0.9825] );
 	
