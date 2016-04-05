@@ -68,9 +68,10 @@ stem( ti, xi, ... % plot discrete signal
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
 	'ShowBaseLine', 'off' );
 
-legend( ... % show legend
+hl = legend( ... % show legend
 	{sprintf( 'continuous sine (%.1fHz)', f ), sprintf( 'quantization (%.1fHz, %dbit)', fS, nS )}, ...
 	'Location', 'southeast' );
+set( hl, 'Color', [0.9825, 0.9825, 0.9825] );
 	
 	% -----------------------------------------------------------------------
 	% plot D/A conversion
@@ -105,9 +106,10 @@ stem( ti, xi, ... % plot discrete signal
 plot( t, xr, ... % plot reconstructed signal
 	'Color', 'blue', 'LineWidth', 2 );
 
-legend( ... % show legend
+hl = legend( ... % show legend
 	{'quantized signal', sprintf( 'reconstruction (~%.1fHz)', fR )}, ...
 	'Location', 'southeast' );
+set( hl, 'Color', [0.9825, 0.9825, 0.9825] );
 
 	% -----------------------------------------------------------------------
 	% write plot images

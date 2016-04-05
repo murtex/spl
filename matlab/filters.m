@@ -1,14 +1,15 @@
 clearvars( '-except', '-regexp', '^fig\d*$' );
 
 	% -----------------------------------------------------------------------
-	% setup commonly used second-order butterworth filters
+	% setup commonly used second-order Butterworth filters
 	% -----------------------------------------------------------------------
 fS = 1000; % sampling rate
+
 order = 2; % filter order
 cuthigh = 100; % cutoff frequencies
 cutlow = 350;
 
-[blow, alow] = butter( order, cutlow / (fS/2), 'low' );
+[blow, alow] = butter( order, cutlow / (fS/2), 'low' ); % filter coefficients
 [bhigh, ahigh] = butter( order, cuthigh / (fS/2), 'high' );
 
 	% -----------------------------------------------------------------------
@@ -49,9 +50,10 @@ plot( fhigh, abs( hhigh ).^2, ... % plot filter response
 plot( [1, 1] * cuthigh, get( gca(), 'XLim' ), ... % cutoff frequency
 	'Color', 'red', 'Linewidth', 2, 'LineStyle', '--' );
 
-legend( ... % show legend
+hl = legend( ... % show legend
 	{sprintf( 'response (order: %d)', order ), sprintf( 'cutoff frequency (%.0fHz)', cuthigh )}, ...
 	'Location', 'southeast' );
+set( hl, 'Color', [0.9825, 0.9825, 0.9825] );
 	
 	% -----------------------------------------------------------------------
 	% plot low-pass filter
@@ -85,9 +87,10 @@ plot( flow, abs( hlow ).^2, ... % plot filter response
 plot( [1, 1] * cutlow, get( gca(), 'XLim' ), ... % cutoff frequency
 	'Color', 'red', 'Linewidth', 2, 'LineStyle', '--' );
 
-legend( ... % show legend
+hl = legend( ... % show legend
 	{sprintf( 'response (order: %d)', order ), sprintf( 'cutoff frequency (%.0fHz)', cutlow )}, ...
 	'Location', 'southwest' );
+set( hl, 'Color', [0.9825, 0.9825, 0.9825] );
 	
 	% -----------------------------------------------------------------------
 	% write plot images

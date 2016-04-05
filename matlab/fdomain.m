@@ -78,8 +78,9 @@ stem( ti, xi, ... % plot discrete signal
 plot( t, xr, ... % plot recomposed signal
 	'Color', 'blue', 'LineWidth', 2 );
 
-legend( {sprintf( 'square wave (%.1fHz, @%.1fHz)', f, fS ), 'recomposition from spectrum'}, ...
+hl = legend( {sprintf( 'square wave (%.1fHz, @%.1fHz)', f, fS ), 'recomposition from spectrum'}, ...
 	'Location', 'southeast' );
+set( hl, 'Color', [0.9825, 0.9825, 0.9825] );
 
 	% -----------------------------------------------------------------------
 	% plot power spectrum
@@ -105,7 +106,6 @@ xlabel( 'frequency in hertz' );
 ylabel( 'power' );
 
 xlim( [0, fNy] ); % set axes
-%ylim( [0, 1] * max( Pk ) * 1.1 );
 ylim( [0, 1] * 1.1 );
 
 stem( fk, Pk, ... % plot power spectrum
