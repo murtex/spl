@@ -30,23 +30,6 @@
 \begin{frame} % -------------------------------------------------------------
 	\frametitle{Filters}
 	\begin{itemize}
-		\item many \textbf{filter families} with different characteristics (\texttt{matlab/filters2.m}), e.\,g.
-			\begin{figure}
-				\centering
-				\begin{subfigure}[c]{0.8\linewidth}
-					\cfbox{neutral}{\includegraphics[width=0.9\linewidth]{images/filters.eps}}
-				\end{subfigure}
-			\end{figure}
-		\item \textbf{normalized frequency}
-			\begin{align*}
-				\tilde f_k=\frac{f_k}{f_{\textrm{Ny}}}=\frac{2f_k}{f_{\textrm S}}\in[0,1]\quad\textrm{with}\quad k\in\{1,\ldots,N\}
-			\end{align*}
-	\end{itemize}
-\end{frame}
-
-\begin{frame} % -------------------------------------------------------------
-	\frametitle{Filters}
-	\begin{itemize}
 		\item filters are represented by \textbf{filter coefficients} $b_j$ (feedforward) and $a_j$ (feedback)
 		\item high \textbf{filter order} $m$ increases computational complexity but thereby quality
 			\begin{align*}
@@ -65,6 +48,23 @@
 					\cfbox{neutral}{\includegraphics[width=0.9\linewidth]{images/ripple.png}}
 				\end{subfigure}
 			\end{figure}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} % -------------------------------------------------------------
+	\frametitle{Filters}
+	\begin{itemize}
+		\item many \textbf{filter families} with different characteristics (\texttt{matlab/filters2.m}), e.\,g.
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.8\linewidth}
+					\cfbox{neutral}{\includegraphics[width=0.9\linewidth]{images/filters.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item \textbf{normalized frequency}
+			\begin{align*}
+				\tilde f_k=\frac{f_k}{f_{\textrm{Ny}}}=\frac{2f_k}{f_{\textrm S}}\in[0,1]\quad\textrm{with}\quad k\in\{1,\ldots,N\}
+			\end{align*}
 	\end{itemize}
 \end{frame}
 
