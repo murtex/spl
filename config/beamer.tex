@@ -42,7 +42,11 @@
 \setbeamercolor{block title}{use={frametitle}, fg=frametitle.fg, bg=frametitle.bg}
 
 	% lists
-\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{1em}}
+\let\olditem\item
+\setbeamertemplate{itemize/enumerate body begin}{
+	\renewcommand{\item}{\olditem}
+	\setlength{\leftmargini}{1em}} % insert vfill before \olditem?
 
 %\setbeamertemplate{itemize/enumerate body begin}{\normalsize}
 %\setbeamertemplate{itemize/enumerate subbody begin}{\normalsize}
+
