@@ -2,13 +2,13 @@
 	% fonts
 \usefonttheme{serif}
 
-\setbeamerfont{frametitle}{size=\Large}
+\setbeamerfont{frametitle}{size=\large}
 \setbeamerfont{footline}{size=\scriptsize}
 
 	% colors
-\usecolortheme[RGB={41, 92, 124}]{structure} % cold
 %\usecolortheme[RGB={53, 98, 56}]{structure} % warm
 %\usecolortheme[RGB={16, 72, 113}]{structure} % uni potsdam
+\usecolortheme[RGB={41, 92, 124}]{structure} % cold
 
 \setbeamercolor{palette primary}{use=structure, fg=white, bg=structure.fg!100!white} % general colors
 \setbeamercolor{palette secondary}{use=structure, fg=white, bg=structure.fg!95!white}
@@ -38,5 +38,11 @@
 		\insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
 	\end{beamercolorbox}}
 
+\setbeamertemplate{blocks}[default]
+\setbeamercolor{block title}{use={frametitle}, fg=frametitle.fg, bg=frametitle.bg}
+
+	% lists
 \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{1em}}
 
+%\setbeamertemplate{itemize/enumerate body begin}{\normalsize}
+%\setbeamertemplate{itemize/enumerate subbody begin}{\normalsize}
