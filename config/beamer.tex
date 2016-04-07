@@ -41,6 +41,17 @@
 \setbeamertemplate{blocks}[default]
 \setbeamercolor{block title}{use={frametitle}, fg=frametitle.fg, bg=frametitle.bg}
 
+	% subsections
+\AtBeginSubsection[]{
+	\begin{frame}
+		\vfill
+		\centering
+		\begin{beamercolorbox}[center]{title}
+			\usebeamerfont{title}\insertsubsectionhead
+		\end{beamercolorbox}
+		\vfill
+	\end{frame}}
+
 	% lists
 \let\olditem\item
 \setbeamertemplate{itemize/enumerate body begin}{
