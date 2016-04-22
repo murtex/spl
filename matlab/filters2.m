@@ -102,9 +102,3 @@ plot( linspace( 0, 1, numel( h4 ) ), abs( h4 ).^2, ... % plot filter response
 plot( [1, 1] * cutoff, get( gca(), 'YLim' ), ... % plot cutoff frequency
 	'Color', 'red', 'Linewidth', 2, 'LineStyle', '--' );
 
-	% -----------------------------------------------------------------------
-	% write plot image
-	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
-	% -----------------------------------------------------------------------
-print( fig1, 'filters', '-depsc2', '-loose' );
-

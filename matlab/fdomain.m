@@ -123,10 +123,3 @@ stem( fk, Pk, ... % plot power spectrum
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
 	'ShowBaseLine', 'off' );
 
-	% -----------------------------------------------------------------------
-	% write plot images
-	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
-	% -----------------------------------------------------------------------
-print( fig1, 'fdomain_decomp', '-depsc2', '-loose' );
-print( fig2, 'fdomain_powspec', '-depsc2', '-loose' );
-

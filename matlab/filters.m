@@ -92,10 +92,3 @@ h = legend( ... % show legend
 	'Location', 'southwest' );
 set( h, 'Color', [0.9825, 0.9825, 0.9825] );
 	
-	% -----------------------------------------------------------------------
-	% write plot images
-	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
-	% -----------------------------------------------------------------------
-print( fig1, 'filters_high', '-depsc2', '-loose' );
-print( fig2, 'filters_low', '-depsc2', '-loose' );
-
