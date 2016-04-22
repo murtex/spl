@@ -38,18 +38,15 @@
 		\insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
 	\end{beamercolorbox}}
 
-\setbeamertemplate{blocks}[default]
-\setbeamercolor{block title}{use={frametitle}, fg=frametitle.fg, bg=frametitle.bg}
-
 	% subsections
+		%\setbeamercolor{title}{fg=title.fg}
+
 \AtBeginSubsection[]{
-	\begin{frame}[plain]
-		%\vfill
-		%\centering
-		%\begin{beamercolorbox}[center]{title}
-			%\usebeamerfont{title}\insertsubsectionhead
-		%\end{beamercolorbox}
-		%\vfill
+	\begin{frame}
+		\vfill
+		\centering
+		\usebeamerfont{title}{\insertsectionhead/\insertsubsectionhead}
+		\vfill
 	\end{frame}}
 
 	% lists
