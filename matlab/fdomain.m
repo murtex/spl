@@ -116,7 +116,7 @@ title( get( fig2, 'Name' ) );
 xlabel( 'frequency in hertz' );
 ylabel( 'power' );
 
-xlim( [0, fNy] ); % set axes
+xlim( [0, max( fk )] ); % set axes
 ylim( [0, 1] * 1.1 );
 
 stem( fk, Pk, ... % plot power spectrum
