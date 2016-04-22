@@ -11,6 +11,14 @@ N = floor( L * fS );
 
 ti = (0:N-1) / fS; % quantized time values
 xi = 2*(2*floor( f * ti ) - floor( 2*f * ti ) + 1) - 1; % quantized square wave
+%xi = 2*(ti/f - floor( 1/2 + ti/f )); % sawtooth wave
+%xi = 2*abs( 2*(ti/f - floor( 1/2 + ti/f )) ) - 1; % triangle wave
+
+	% -----------------------------------------------------------------------
+	% apply a phase shift to test signal
+	% -----------------------------------------------------------------------
+phase = 0; % phase shift in degrees, EXERCISE!
+xi = circshift( xi, [0, round( f*fS*phase/360 )] );
 
 	% -----------------------------------------------------------------------
 	% Fourier transform the test signal
@@ -28,10 +36,11 @@ fk(fk >= fNy) = fk(fk >= fNy) - fS; % imply negative frequencies
 Pk = abs( Xk ) .^ 2;
 
 Pk(fk < 0) = []; % remove negative frequency components
+Xk(fk < 0) = [];
 fk(fk < 0) = [];
 
 Pk(2:end) = 2 * Pk(2:end); % rescale to match total power
-Xk = [sqrt( Pk(1) ), 2 * sqrt( Pk(2:end) / 2 )];
+Xk(2:end) = sqrt( 2 ) * Xk(2:end);
 
 	% -----------------------------------------------------------------------
 	% re-composite signal from spectrum
@@ -42,8 +51,10 @@ t = linspace( 0, L, L / dt );
 
 xr = Xk(1) * ones( 1, numel( t ) );
 for j = 2:numel( Xk )
-	xr = xr + Xk(j) * sin( 2*pi*fk(j) * t );
+	%xr = xr + sqrt( 2 ) * sqrt( Pk(j) ) * sin( 2*pi*fk(j) * t ); % reconstruction from powers
+	xr = xr + sqrt( 2 ) * (Xk(j) * exp( 2*pi*i*fk(j) * t ) ); % reconstruction from Fourier coefficients
 end
+xr = real( xr );
 
 	% -----------------------------------------------------------------------
 	% plot Fourier decomposition

@@ -46,13 +46,14 @@
 		\item restrict to \textbf{one-sided spectrum}
 			\begin{code}
 >> Pk(fk < 0) = []; \color{medium}% remove negative frequency components
+>> Xk(fk < 0) = [];
 >> fk(fk < 0) = [];
 >> Pk(2:end) = 2 * Pk(2:end); \color{medium}% rescale to match total power
->> Xk = [sqrt( Pk(1) ), 2 * sqrt( Pk(2:end) / 2 )];
+>> Xk(2:end) = sqrt( 2 ) * Xk(2:end);
 			\end{code}
-		\item $X_1$ is \textbf{DC offset}, $X_{k>1}$ are \textbf{contributions of sines} with frequencies $f_{k>1}$
+		\item $P_1$ is \textbf{DC offset}, $P_{k>1}$ are \textbf{contributions of sines} with frequencies $f_{k>1}$
 			\begin{align*}
-				x(t)=X_1+\sum_{k>1}X_k\sin(2\pi f_kt)
+				x(t)=\sqrt{P_1}+\sqrt2\sum_{k>1}\sqrt{P_k}\sin(2\pi f_kt)
 			\end{align*}
 	\end{itemize}
 \end{frame}
@@ -60,6 +61,10 @@
 \begin{frame} % -------------------------------------------------------------
 	\frametitle{Frequency domain}
 	\begin{itemize}
+		\item complex valued but without loss of phase information
+			\begin{align*}
+				x(t)=X_1+\sqrt2\sum_{k>1}X_k\ee^{2\pi\ii f_kt}
+			\end{align*}
 		\item \textbf{example}: \texttt{matlab/fdomain.m}
 			\begin{figure}
 				\centering
