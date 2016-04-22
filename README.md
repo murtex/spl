@@ -1,6 +1,6 @@
 Speech signal processing using MATLAB
 -------------------------------------
 
-- [Slides](bla)
-- [MATLAB script](blubb)
+- [Slides](slides.pdf)
+- [MATLAB scripts](matlab)
 
