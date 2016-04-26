@@ -21,7 +21,7 @@
 			\end{code}
 		\item frequencies beyond Nyquist frequency are \textbf{negative frequencies}
 			\begin{align*}
-				f_k\rightarrow f_k=\begin{cases}f_k-f_{\textrm S}&\textrm{if $f_k>f_{\textrm{Ny}}$}\\f_k&\textrm{otherwise}\end{cases}
+				f_k\rightarrow\begin{cases}f_k-f_{\textrm S}&\textrm{if $f_k>f_{\textrm{Ny}}$}\\f_k&\textrm{otherwise}\end{cases}
 			\end{align*}
 			\begin{code}
 >> fk(fk > fNy) = fk(fk > fNy) - fS; \color{medium}% imply negative frequencies
