@@ -29,3 +29,31 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame} % -------------------------------------------------------------
+	\frametitle{Time domain}
+	\begin{itemize}
+		\item \textbf{example}: \texttt{matlab/decibel.m} (\sound[automute, inlinesound, samplingrate=44100, bitspersample=16]{\textbf{playback}}{matlab/sound.wav})
+			\begin{align*}
+				P_i=x_i^2\quad\textrm{and}\quad P_{i,\textrm{dB}}=10\log_{10}(x_i^2)
+			\end{align*}
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.48\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/linear.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.48\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/decibel.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item \textbf{exercise}:
+			\begin{itemize}
+				\item verify from reconstruction that \textbf{Nyquist frequency} holds
+					\begin{align*}
+						f_{\textrm{Ny}}=\frac{f_{\textrm S}}2
+					\end{align*}
+				\item compare commonly used \textbf{sampling standards} (telephony, Audio-CD, professional audio equipment, \ldots)
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
