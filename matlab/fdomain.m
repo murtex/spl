@@ -1,4 +1,6 @@
 clearvars( '-except', '-regexp', '^fig\d*$' );
+ws = warning();
+warning( 'off', 'MATLAB:audiovideo:wavread:functionToBeRemoved' );
 
 	% -----------------------------------------------------------------------
 	% a discrete test signal (square wave with frequency f and length L)
@@ -123,3 +125,4 @@ stem( fk, Pk, ... % plot power spectrum
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
 	'ShowBaseLine', 'off' );
 
+warning( ws );
