@@ -1,18 +1,21 @@
 clearvars( '-except', '-regexp', '^fig\d*$' );
 
 	% -----------------------------------------------------------------------
-	% a discrete test signal (square wave with frequency f and length L)
+	% discrete test signal (with base frequency f and length L)
 	% -----------------------------------------------------------------------
-f = 1;
-L = 1; % length in seconds, EXERCISE!
+f = 1; % base frequency, EXERCISE!
+L = 1;
 
 fS = 48; % sampling rate, EXERCISE!
 N = floor( L * fS );
 
 ti = (0:N-1) / fS; % quantized time values
-xi = 2*(2*floor( f * ti ) - floor( 2*f * ti ) + 1) - 1; % quantized square wave
-%xi = 2*(ti/f - floor( 1/2 + ti/f )); % sawtooth wave
-%xi = 2*abs( 2*(ti/f - floor( 1/2 + ti/f )) ) - 1; % triangle wave
+
+%xi = sin( 2*pi*f * ti ); % sine wave, EXERCISE!
+%xi = sin( 2*pi*f * ti) + 0.5*sin( 2*pi*3*f * ti ); % mixed sines, EXERCISE!
+xi = 2*(2*floor( f * ti ) - floor( 2*f * ti ) + 1) - 1; % square wave, EXERCISE!
+%xi = 2*(ti/f - floor( 1/2 + ti/f )); % sawtooth wave, EXERCISE!
+%xi = 2*abs( 2*(ti/f - floor( 1/2 + ti/f )) ) - 1; % triangle wave, EXERCISE!
 
 	% -----------------------------------------------------------------------
 	% apply a phase shift to test signal
@@ -89,7 +92,7 @@ stem( ti, xi, ... % plot discrete signal
 plot( t, xr, ... % plot recomposed signal
 	'Color', 'blue', 'LineWidth', 2 );
 
-h = legend( {sprintf( 'square wave (%.1fHz, @%.1fHz)', f, fS ), 'recomposition from spectrum'}, ...
+h = legend( {sprintf( 'quantized signal (%.1fHz, @%.1fHz)', f, fS ), 'recomposition from spectrum'}, ...
 	'Location', 'southeast' );
 set( h, 'Color', [0.9825, 0.9825, 0.9825] );
 
@@ -116,10 +119,10 @@ title( get( fig2, 'Name' ) );
 xlabel( 'frequency in hertz' );
 ylabel( 'power' );
 
-xlim( [0, max( fk )] ); % set axes
+xlim( [0, 2*(max( fk ) + 1)] ); % set axes
 ylim( [0, 1] * 1.1 );
 
-stem( fk, Pk, ... % plot power spectrum
+stem( fk(Pk > eps), Pk(Pk > eps), ... % plot power spectrum
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
 	'ShowBaseLine', 'off' );
 

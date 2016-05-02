@@ -3,7 +3,7 @@ clearvars( '-except', '-regexp', '^fig\d*$' );
 	% -----------------------------------------------------------------------
 	% a continuous test signal (sine with frequency f and length L)
 	% -----------------------------------------------------------------------
-f = 1;
+f = 1; % signal frequency, EXERCISE!
 L = 1;
 
 x = @( t ) sin( 2*pi*f * t ); % continuous sine with frequency f

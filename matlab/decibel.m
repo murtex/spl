@@ -2,6 +2,7 @@ clearvars( '-except', '-regexp', '^fig\d*$' );
 
 	% -----------------------------------------------------------------------
 	% read a test sound from wave file
+	% https://github.com/murtex/spl/blob/master/matlab/sound.wav?raw=true
 	% -----------------------------------------------------------------------
 [xi, fS, nS] = wavread( 'sound.wav' );
 
