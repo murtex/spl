@@ -92,7 +92,7 @@ stem( ti, xi, ... % plot discrete signal
 plot( t, xr, ... % plot recomposed signal
 	'Color', 'blue', 'LineWidth', 2 );
 
-h = legend( {sprintf( 'quantized signal (%.1fHz, @%.1fHz)', f, fS ), 'recomposition from spectrum'}, ...
+h = legend( {sprintf( 'discrete signal (%.1fHz, @%.1fHz)', f, fS ), 'recomposition from spectrum'}, ...
 	'Location', 'southeast' );
 set( h, 'Color', [0.9825, 0.9825, 0.9825] );
 
