@@ -1,4 +1,6 @@
 clearvars( '-except', '-regexp', '^fig\d*$' );
+ws = warning();
+warning( 'off', 'MATLAB:audiovideo:wavread:functionToBeRemoved' );
 
 	% -----------------------------------------------------------------------
 	% read a test sound from wave file
@@ -77,4 +79,6 @@ ylim( [minPidB, -0.1 * minPidB] );
 
 plot( ti, PidB, ... % plot logarithmic power
 	'Color', 'blue', 'LineWidth', 2 );
+
+warning( ws );
 
