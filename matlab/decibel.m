@@ -16,7 +16,7 @@ L = (N - 1) / fS; % length in seconds
 ti = linspace( 0, L, N ); % discrete time values
 
 	% -----------------------------------------------------------------------
-	% compute instantaneous power (linear and logarithmic)
+	% compute powers (linear and logarithmic)
 	% -----------------------------------------------------------------------
 Pi = (xi .* xi);
 PidB = 10 * log10( Pi );
@@ -42,12 +42,12 @@ set( fig1, 'Name', 'LINEAR SCALE' ); % set labels
 title( get( fig1, 'Name' ) );
 
 xlabel( 'time in seconds' );
-ylabel( 'instantaneous power' );
+ylabel( 'amplitude' );
 
 xlim( [0, L] ); % set axes
-ylim( [0, 1] * 1.1 );
+ylim( [-1, 1] * 1.1 );
 
-plot( ti, Pi, ... % plot linear power
+plot( ti, xi, ... % plot linear power
 	'Color', 'blue', 'LineWidth', 2 );
 
 	% -----------------------------------------------------------------------
@@ -71,7 +71,7 @@ set( fig2, 'Name', 'DECIBEL SCALE' ); % set labels
 title( get( fig2, 'Name' ) );
 
 xlabel( 'time in seconds' );
-ylabel( 'instantaneous power' );
+ylabel( 'power' );
 
 xlim( [0, L] ); % set axes
 minPidB = min( PidB(~isinf( PidB )) );
