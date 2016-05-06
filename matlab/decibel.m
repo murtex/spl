@@ -47,7 +47,7 @@ ylabel( 'amplitude' );
 xlim( [0, L] ); % set axes
 ylim( [-1, 1] * 1.1 );
 
-plot( ti, xi, ... % plot linear power
+plot( ti, xi, ... % plot linear waveform
 	'Color', 'blue', 'LineWidth', 2 );
 
 	% -----------------------------------------------------------------------
