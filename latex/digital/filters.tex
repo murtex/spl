@@ -69,6 +69,38 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame} % -------------------------------------------------------------
+	\frametitle{Filters}
+	\begin{itemize}
+		\item \textbf{example}: \texttt{matlab/spectrum.m} (\sound[automute, inlinesound, samplingrate=44100, bitspersample=16, channels=1, encoding=Signed, externalviewer]{\texttt{matlab/sound.wav}}{matlab/sound.wav})
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/spectd.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/specfd.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item \textbf{example}: \texttt{matlab/spectrum.m} (\sound[automute, inlinesound, samplingrate=44100, bitspersample=16, channels=1, encoding=Signed, externalviewer]{\texttt{matlab/ivowel.wav}}{matlab/ivowel.wav})
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/spectd2.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/specfd2.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item \textbf{exercise}:
+			\begin{itemize}
+				\item observe the occurrence of \textbf{filter delay}
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile] % ----------------------------------------------------
 	\frametitle{Filters}
 	\begin{itemize}
@@ -100,17 +132,6 @@
 %>> [h, f] = freqz( b, a, 512, fS ); \color{medium}% complex filter response
 %>> plot( f, abs( h ).^2 );
 			%\end{code}
-	\end{itemize}
-\end{frame}
-
-\begin{frame} % -------------------------------------------------------------
-	\frametitle{Filters}
-	\begin{itemize}
-		\item \textbf{exercise}:
-			\begin{itemize}
-				\item Can you image what \textbf{filter delay} means?
-				\item TODO: home audio/hifi, bass and treble
-			\end{itemize}
 	\end{itemize}
 \end{frame}
 

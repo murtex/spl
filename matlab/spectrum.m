@@ -6,7 +6,7 @@ warning( 'off', 'MATLAB:audiovideo:wavread:functionToBeRemoved' );
 	% read a test sound from wave file
 	% https://github.com/murtex/spl/blob/master/matlab/sound.wav?raw=true
 	% -----------------------------------------------------------------------
-[xi, fS, nS] = wavread( 'sound.wav' ); % wave filename, EXERCISE
+[xi, fS, nS] = wavread( 'ivowel.wav' ); % wave filename, EXERCISE
 
 xi = xi(1:end, 1); % restrict to first channel
 xi = xi / max( abs( xi ) ); % normalize signal
