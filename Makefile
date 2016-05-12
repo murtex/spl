@@ -1,13 +1,19 @@
 .PHONY: slides
+.PHONY: assign1
 .PHONY: images
 .PHONY: clean
 
-all: slides
+all: slides assign1
 
 slides:
 	pdflatex --shell-escape -jobname slides "\input{latex/slides}"
 	pdflatex --shell-escape -jobname slides "\input{latex/slides}"
 	pdflatex --shell-escape -jobname slides "\input{latex/slides}"
+
+assign1:
+	pdflatex --shell-escape -jobname assign1 "\input{latex/assign1}"
+	pdflatex --shell-escape -jobname assign1 "\input{latex/assign1}"
+	pdflatex --shell-escape -jobname assign1 "\input{latex/assign1}"
 
 images:
 	#cd matlab; matlab -nosplash -nodesktop -r "sampling; print( fig1, '../images/sampling_ad', '-depsc2', '-loose' ); print( fig2, '../images/sampling_da', '-depsc2', '-loose' ); exit();"
@@ -17,8 +23,9 @@ images:
 	#cd matlab; matlab -nosplash -nodesktop -r "spectrum; print( fig1, '../images/spectd2', '-depsc2', '-loose' ); print( fig2, '../images/specfd2', '-depsc2', '-loose' ); exit();"
 	#cd matlab; matlab -nosplash -nodesktop -r "filters; print( fig1, '../images/filters_high', '-depsc2', '-loose' ); print( fig2, '../images/filters_low', '-depsc2', '-loose' ); exit();"
 	#cd matlab; matlab -nosplash -nodesktop -r "filters2; print( fig1, '../images/filters', '-depsc2', '-loose' ); exit();"
-	cd matlab; matlab -nosplash -nodesktop -r "specgram; print( fig1, '../images/sgramt', '-depsc2', '-loose' ); print( fig2, '../images/sgramf', '-depsc2', '-loose' ); exit();"
+	#cd matlab; matlab -nosplash -nodesktop -r "specgram; print( fig1, '../images/sgramt', '-depsc2', '-loose' ); print( fig2, '../images/sgramf', '-depsc2', '-loose' ); exit();"
 
 clean:
 	rm -f slides.*
+	rm -f assign1.*
 
