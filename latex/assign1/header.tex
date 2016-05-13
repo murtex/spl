@@ -1,0 +1,45 @@
+\section*{Speech signal processing using MATLAB}
+{\large{\textbf{Assignment 1 (\today)}}}\\
+
+\noindent Each task below requires you to write a small MATLAB script. Please create a separate script file for each of these and name it appropriately. Submit your results by uploading all files using the Moodle infrastructure until Tuesday, June 7.
+
+\subsection*{MATLAB quick guide}
+\begin{itemize}
+	\item script files can be created inside MATLAB using the menu ``File$\,\rightarrow\,$New$\,\rightarrow\,$Script''
+	\item save a script file by using ``File$\,\rightarrow\,$Save as\ldots'' and run it in MATLAB's command line window by simply typing its name
+	\item when computing values use unique variable names beginning with a letter
+	\item the content of any variable can always be inspected by double-clicking its name in MATLAB's Workspace window (``Desktop$\,\rightarrow\,$Workspace'')
+	\item code lines terminated by a semicolon (\texttt{;}) produce no output in command line window, whereas lines without terminating semicolon do:
+\end{itemize}
+\begin{code}
+>> a = sqrt( 2 ); \color{medium}% will give no output
+>> b = sqrt( 2 ) \color{medium}% will give 1.4142 as output
+\end{code}
+\begin{itemize}
+	\item code lines starting with a percent sign (\texttt{\%}) are comments and will be ignored by MATLAB (please try to comment your submissions well)
+	\item plots can be generated using the following code snippet, e.\,g. plotting amplitude values \texttt{xi} over time values \texttt{ti} and labeling axes:
+\end{itemize}
+\begin{code}
+>> figure(); \color{medium}% create a figure
+>> plot( ti, xi ); \color{medium}% plot data
+>> xlabel( 'time' ); \color{medium}% set x-axis label
+>> ylabel( 'amplitude' ); \color{medium}% set y-axis label
+\end{code}
+\begin{itemize}
+	\item plot range can be limited on both x- and y-axis:
+\end{itemize}
+\begin{code}
+>> xlim( [0, L] ); \color{medium}% limit x-range to 0...L
+>> ylim( [0, 1000] ); \color{medium}% limit y-range to 0...1000
+\end{code}
+\begin{itemize}
+	\item you can search for MATLAB commands by running the command
+\end{itemize}
+\begin{code}
+>> help SEARCHTERM
+\end{code}
+\begin{itemize}
+	\item also refer to the lecture's example scripts provided on Moodle
+	\item an additional online resource is available on \url{http://www.tutorialspoint.com/matlab/matlab_quick_guide.htm}
+\end{itemize}
+
