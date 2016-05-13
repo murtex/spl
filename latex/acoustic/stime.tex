@@ -4,5 +4,36 @@
 
 \begin{frame} % -------------------------------------------------------------
 	\frametitle{Short-time analysis}
+	\begin{itemize}
+		\item \textbf{spectral analysis} is essential for speech acoustics
+		\item \textbf{power spectrum} has no temporal information anymore (\sound[automute, inlinesound, samplingrate=44100, bitspersample=16, channels=1, encoding=Signed, externalviewer]{\texttt{matlab/tam.wav}}{matlab/tam.wav})
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.48\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/tatd.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.48\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/tafd.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item choosing \textbf{short overlapping segments} (windows) at different time points
+		\item length of the segments (\textbf{window size}) is crucial
+		\item \textbf{overlap} and \textbf{window function} control spectral leakage
+	\end{itemize}
+\end{frame}
+
+\begin{frame} % -------------------------------------------------------------
+	\frametitle{Short-time analysis}
+	\begin{itemize}
+		\item \textbf{example}: \texttt{matlab/windows.m}
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.8\linewidth}
+					\cfbox{neutral}{\includegraphics[width=0.9\linewidth]{images/windows.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item Fourier transforms of these segments lead to \textbf{spectrograms}
+	\end{itemize}
 \end{frame}
 

@@ -5,13 +5,11 @@ warning( 'off', 'MATLAB:audiovideo:wavread:functionToBeRemoved' );
 	% -----------------------------------------------------------------------
     % load wave file
 	% -----------------------------------------------------------------------
-[xi, fS, nS] = wavread( 'ka_male.wav' );
+[xi, fS, nS] = wavread( 'ta_male.wav' );
 
 N = numel( xi ); % number of samples
 L = (N - 1) / fS; % length in seconds
 ti = linspace( 0, L, N ); % discrete time values
-
-xi = xi / max( xi(:) ); % normalize signal
 
     % -----------------------------------------------------------------------
     % segment signal
@@ -40,21 +38,26 @@ end
     % -----------------------------------------------------------------------
     % fourier transform to power spectra
     % -----------------------------------------------------------------------
+fftsize = 4096;
+
 fNy = fS / 2; % prepare frequencies
-f = (0:wsizen-1) / wsizen * fS;
+f = (0:fftsize-1) / fftsize * fS;
 f(f >= fNy) = f(f >= fNy) - fS;
 
 Pj = []; % pre-allocation
 for i = 1:nsegs
-    X = fft( xj(:, i) ) / wsizen; % fourier coefficients
+    X = fft( xj(:, i), fftsize ) / fftsize; % one-sided fourier coefficients
+	X(f < 0) = [];
     P = abs( X ) .^ 2; % power
-    P(f < 0) = []; % one-sided power
     P = 2 * P(2:end); % rescaling w/o DC
     Pj = cat( 2, Pj, P ); % accumulate
 end
 
 f(f < 0) = []; % positive frequencies only
 f = f(2:end); % remove DC
+
+Pj(f > 4000, :) = []; % frequency band limit
+f(f > 4000) = [];
 
 	% -----------------------------------------------------------------------
 	% plot waveform
@@ -104,16 +107,16 @@ set( fig2, 'Name', sprintf( 'SPECTROGRAM (%dms, %d%%)', wsize, woverlap ) ); % s
 title( get( fig2, 'Name' ) );
 
 xlabel( 'time in seconds' );
-ylabel( 'frequency in kilohertz' );
+ylabel( 'frequency in hertz' );
 
 xlim( [0, L] ); % set axes
-ylim( [min( f ), max( f )] / 1000 );
+ylim( [min( f ), max( f )] );
 
 colormap( flipud( colormap( 'gray' ) ) );
-imagesc( tj, f / 1000, 10 * log10( Pj ) );
+imagesc( tj, f, 10 * log10( Pj ) );
 
-h = colorbar( 'EastOutside' ); % legend
-ylabel( h, 'power in decibel' );
+%h = colorbar( 'EastOutside' ); % legend
+%ylabel( h, 'power in decibel' );
 
 warning( ws );
 

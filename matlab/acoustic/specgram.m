@@ -2,8 +2,10 @@ clearvars( '-except', '-regexp', '^fig\d*$' );
 ws = warning();
 warning( 'off', 'MATLAB:audiovideo:wavread:functionToBeRemoved' );
 
+	% -----------------------------------------------------------------------
     % load wave file
-[xi, fS, nS] = wavread( 'sound.wav' ); % wave filename, EXERCISE
+	% -----------------------------------------------------------------------
+[xi, fS, nS] = wavread( 'ta_male.wav' ); % wave filename, EXERCISE
 
 N = numel( xi ); % number of samples
 L = (N - 1) / fS; % length in seconds
@@ -12,17 +14,20 @@ ti = linspace( 0, L, N ); % discrete time values
 	% -----------------------------------------------------------------------
     % compute spectrogram
 	% -----------------------------------------------------------------------
-wsize = 10; % window size in milliseconds
+wsize = 10; % window size in milliseconds, EXERCISE
 woverlap = 66; % window overlap in percent
-wfunc = @blackmanharris; % window winction
+wfunc = @blackmanharris; % window function
 
 [Xk, fk, tj] = spectrogram( xi, ...
-    wfunc( wsize/1000 * fS ), ... % window funciton
-    ceil( woverlap/100 * wsize/1000 * fS ), ... % window overlap
-    512, fS ); % fft
+    wfunc( ceil( wsize/1000 * fS ) ), ... % window function values
+    ceil( woverlap/100 * wsize/1000 * fS ), ... % window overlap samples
+    4096, fS ); % fourier transform
 
 Xk = Xk(2:end, :); % remove constant DC
 fk = fk(2:end);
+
+Xk(fk > 4000, :) = []; % limit frequencies to 4kHz
+fk(fk > 4000) = [];
 
 	% -----------------------------------------------------------------------
     % convert to power spectrum
@@ -80,13 +85,13 @@ set( fig2, 'Name', sprintf( 'SPECTROGRAM (%dms, %d%%)', wsize, woverlap ) ); % s
 title( get( fig2, 'Name' ) );
 
 xlabel( 'time in seconds' );
-ylabel( 'frequency in kilohertz' );
+ylabel( 'frequency in hertz' );
 
 xlim( [0, L] ); % set axes
-ylim( [min( fk ), max( fk )] / 1000 );
+ylim( [min( fk ), max( fk )] );
 
 colormap( flipud( colormap( 'gray' ) ) );
-imagesc( tj, fk / 1000, PkdB );
+imagesc( tj, fk, PkdB );
 
 warning( ws );
 

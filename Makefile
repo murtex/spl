@@ -23,7 +23,8 @@ images:
 	#cd matlab/digital; matlab -nosplash -nodesktop -r "spectrum; print( fig1, '../../images/spectd2', '-depsc2', '-loose' ); print( fig2, '../../images/specfd2', '-depsc2', '-loose' ); exit();"
 	#cd matlab/digital; matlab -nosplash -nodesktop -r "filters; print( fig1, '../../images/filters_high', '-depsc2', '-loose' ); print( fig2, '../../images/filters_low', '-depsc2', '-loose' ); exit();"
 	#cd matlab/digital; matlab -nosplash -nodesktop -r "filters2; print( fig1, '../../images/filters', '-depsc2', '-loose' ); exit();"
-	#cd matlab; matlab -nosplash -nodesktop -r "specgram; print( fig1, '../../images/sgramt', '-depsc2', '-loose' ); print( fig2, '../../images/sgramf', '-depsc2', '-loose' ); exit();"
+	#cd matlab/digital; matlab -nosplash -nodesktop -r "spectrum; print( fig1, '../../images/tatd', '-depsc2', '-loose' ); print( fig2, '../../images/tafd', '-depsc2', '-loose' ); exit();"
+	cd matlab/acoustic; matlab -nosplash -nodesktop -r "windows; print( fig1, '../../images/windows', '-depsc2', '-loose' ); exit();"
 
 clean:
 	rm -f slides.*
