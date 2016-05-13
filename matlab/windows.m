@@ -56,7 +56,7 @@ stairs( ((-1:wsize) - wsize/2) / (wsize/2), [0; w2; 0], ... % plot window functi
 		% hann
 subplot( 2, 2, 3 );
 
-title( 'Hann(ing)' );
+title( 'Hann(-ing)' );
 xlabel( 'time' );
 ylabel( 'magnitude' );
 

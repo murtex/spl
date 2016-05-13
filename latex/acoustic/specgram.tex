@@ -27,5 +27,33 @@
 					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/tasg2.eps}}
 				\end{subfigure}
 			\end{figure}
+		\item \textbf{exercise}:
+			\begin{itemize}
+				\item influence of \textbf{window size} $\rightarrow$ \textbf{broad band} vs. \textbf{narrow band} spectrogram
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile] % -------------------------------------------------------------
+	\frametitle{Spectrograms}
+	\begin{itemize}
+		\item set up windowing
+			\begin{code}
+>> wsize = 10; \color{medium}% window size in milliseconds
+>> woverlap = 66; \color{medium}% window overlap in percent
+>> wfunc = @blackmanharris; \color{medium}% window function
+			\end{code}
+		\item compute the spectrogram
+			\begin{code}
+>> [Xk, fk, ti] = spectrogram( xi, ... \color{medium}% signal
+	wfunc( ceil( wsize/1000 * fS ) ), ... \color{medium}% window function values
+	ceil( woverlap/100 * wsize/1000 * fS ), ... \color{medium}% window overlap samples
+	4096, fS ); % \color{medium}fourier transform
+			\end{code}
+		\item plot the spectrogram
+			\begin{code}
+>> colormap( flipud( colormap( 'gray' ) ) ); \color{medium} % set color coding
+>> imagesc( ti, fk, Pk ); \color{medium} % plot spectral powers
+			\end{code}
 	\end{itemize}
 \end{frame}
