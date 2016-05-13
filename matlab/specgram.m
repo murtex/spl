@@ -5,7 +5,7 @@ warning( 'off', 'MATLAB:audiovideo:wavread:functionToBeRemoved' );
 	% -----------------------------------------------------------------------
     % load wave file
 	% -----------------------------------------------------------------------
-[xi, fS, nS] = wavread( 'ta_male.wav' ); % wave filename, EXERCISE
+[xi, fS, nS] = wavread( 'tam.wav' ); % wave filename, EXERCISE
 
 N = numel( xi ); % number of samples
 L = (N - 1) / fS; % length in seconds
@@ -14,7 +14,7 @@ ti = linspace( 0, L, N ); % discrete time values
 	% -----------------------------------------------------------------------
     % compute spectrogram
 	% -----------------------------------------------------------------------
-wsize = 10; % window size in milliseconds, EXERCISE
+wsize = 75; % window size in milliseconds, EXERCISE
 woverlap = 66; % window overlap in percent
 wfunc = @blackmanharris; % window function
 
