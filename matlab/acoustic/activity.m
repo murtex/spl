@@ -1,38 +1,63 @@
-clearvars();
+clearvars( '-except', '-regexp', '^fig\d*$' );
 ws = warning();
 warning( 'off', 'MATLAB:audiovideo:wavread:functionToBeRemoved' );
 
+	% -----------------------------------------------------------------------
     % load wave file
-[xi, fS, nS] = wavread( 'sound.wav' ); % wave filename, EXERCISE
+	% -----------------------------------------------------------------------
+[xi, fS, nS] = wavread( 'ka_male.wav' );
 
 N = numel( xi ); % number of samples
 L = (N - 1) / fS; % length in seconds
 ti = linspace( 0, L, N ); % discrete time values
 
-	% -----------------------------------------------------------------------
-    % compute spectrogram (DSP toolox)
-	% -----------------------------------------------------------------------
+xi = xi / max( xi(:) ); % normalize signal
+
+    % -----------------------------------------------------------------------
+    % segment signal
+    % -----------------------------------------------------------------------
 wsize = 10; % window size in milliseconds
-woverlap = 50; % window overlap in percent
-wfunc = @blackmanharris; % window winction
+woverlap = 66; % window overlap in percent
+wfunc = @blackmanharris; % window function
 
-[Xk, fk, tj] = spectrogram( xi, ...
-    wfunc( wsize/1000 * fS ), ... % window funciton
-    ceil( woverlap/100 * wsize/1000 * fS ), ... % window overlap
-    512, fS ); % fft
+wsizen = ceil( wsize/1000 * fS ); % windowing in number of samples
+woverlapn = ceil( woverlap/100 * wsize/1000 * fS );
+wstriden = wsizen - woverlapn;
 
-Xk = Xk(2:end, :); % remove constant DC
-fk = fk(2:end);
+nsegs = ceil( N / wstriden ); % number of segments
 
-	% -----------------------------------------------------------------------
-    % convert to power spectrum
-	% -----------------------------------------------------------------------
-Pk = abs( Xk ) .^ 2;
-PkdB = 10 * log10( Pk );
+Nz = (nsegs-1)*wstriden + wsizen; % zero-pad signal
+xiz = cat( 1, xi, zeros( Nz - N, 1 ) );
+
+xj = zeros( wsizen, nsegs ); % split segments
+tj = zeros( 1, nsegs );
+for i = 1:nsegs
+    xj(:, i) = xiz((i-1)*wstriden+1:(i-1)*wstriden+wsizen); % split signal
+    xj(:, i) = xj(:, i) .* wfunc( wsizen ); % apply window function
+    tj(i) = round( (i-1)*wstriden + wsizen/2 ) / fS;
+end
+
+    % -----------------------------------------------------------------------
+    % fourier transform to power spectra
+    % -----------------------------------------------------------------------
+fNy = fS / 2; % prepare frequencies
+f = (0:wsizen-1) / wsizen * fS;
+f(f >= fNy) = f(f >= fNy) - fS;
+
+Pj = []; % pre-allocation
+for i = 1:nsegs
+    X = fft( xj(:, i) ) / wsizen; % fourier coefficients
+    P = abs( X ) .^ 2; % power
+    P(f < 0) = []; % one-sided power
+    P = 2 * P(2:end); % rescaling w/o DC
+    Pj = cat( 2, Pj, P ); % accumulate
+end
+
+f(f < 0) = []; % positive frequencies only
+f = f(2:end); % remove DC
 
 	% -----------------------------------------------------------------------
 	% plot waveform
-	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
 	% -----------------------------------------------------------------------
 if exist( 'fig1', 'var' ) ~= 1 || ~ishandle( fig1 ) % prepare figure window
 	fig1 = figure( ...
@@ -61,7 +86,6 @@ plot( ti, xi, ... % plot linear waveform
 
 	% -----------------------------------------------------------------------
 	% plot spectrogram
-	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
 	% -----------------------------------------------------------------------
 if exist( 'fig2', 'var' ) ~= 1 || ~ishandle( fig2 ) % prepare figure window
 	fig2 = figure( ...
@@ -83,10 +107,13 @@ xlabel( 'time in seconds' );
 ylabel( 'frequency in kilohertz' );
 
 xlim( [0, L] ); % set axes
-ylim( [min( fk ), max( fk )] / 1000 );
+ylim( [min( f ), max( f )] / 1000 );
 
 colormap( flipud( colormap( 'gray' ) ) );
-imagesc( tj, fk / 1000, PkdB );
+imagesc( tj, f / 1000, 10 * log10( Pj ) );
+
+h = colorbar( 'EastOutside' ); % legend
+ylabel( h, 'power in decibel' );
 
 warning( ws );
 
