@@ -14,11 +14,11 @@ ti = linspace( 0, L, N ); % discrete time values
 	% -----------------------------------------------------------------------
     % compute spectrogram
 	% -----------------------------------------------------------------------
-wsize = 75; % window size in milliseconds, EXERCISE
-woverlap = 66; % window overlap in percent
-wfunc = @blackmanharris; % window function
+wsize = 10; % window size in milliseconds, EXERCISE
+woverlap = 66; % window overlap in percent, EXERCISE
+wfunc = @blackmanharris; % window function, EXERCISE
 
-[Xk, fk, tj] = spectrogram( xi, ...
+[Xk, fk, tj] = spectrogram( xi, ... % signal
     wfunc( ceil( wsize/1000 * fS ) ), ... % window function values
     ceil( woverlap/100 * wsize/1000 * fS ), ... % window overlap samples
     4096, fS ); % fourier transform

@@ -5,27 +5,49 @@ warning( 'off', 'MATLAB:audiovideo:wavread:functionToBeRemoved' );
 	% -----------------------------------------------------------------------
     % load wave file
 	% -----------------------------------------------------------------------
-[xi, fS, nS] = wavread( 'ta_male.wav' );
+[xi, fS, nS] = wavread( 'tam.wav' );
 
 N = numel( xi ); % number of samples
 L = (N - 1) / fS; % length in seconds
 ti = linspace( 0, L, N ); % discrete time values
 
+	% -----------------------------------------------------------------------
+	% apply equal loudness filter
+	% -----------------------------------------------------------------------
+
+switch fS % yulewalk filter
+	case 32000
+		EL80=[0,120;20,113;30,103;40,97;50,93;60,91;70,89;80,87;90,86;100,85;200,78;300,76;400,76;500,76;600,76;700,77;800,78;900,79.5;1000,80;1500,79;2000,77;2500,74;3000,71.5;3700,70;4000,70.5;5000,74;6000,79;7000,84;8000,86;9000,86;10000,85;12000,95;15000,110;fS/2,115];
+	case {44100, 48000}
+		EL80=[0,120;20,113;30,103;40,97;50,93;60,91;70,89;80,87;90,86;100,85;200,78;300,76;400,76;500,76;600,76;700,77;800,78;900,79.5;1000,80;1500,79;2000,77;2500,74;3000,71.5;3700,70;4000,70.5;5000,74;6000,79;7000,84;8000,86;9000,86;10000,85;12000,95;15000,110;20000,125;fS/2,140];
+	otherwise
+		error( 'invalid sampling fS' );
+end
+
+f = EL80(:, 1) ./ (fS/2);
+m = 10 .^ ((70 - EL80(:, 2)) / 20);
+
+[By, Ay] = yulewalk( 10, f, m );
+xif = filter( By, Ay, xi );
+
+[Bb, Ab] = butter( 2, 150 / (fS/2), 'high' ); % butterworth filter
+xif = filter( Bb, Ab, xif );
+
     % -----------------------------------------------------------------------
     % segment signal
     % -----------------------------------------------------------------------
-wsize = 10; % window size in milliseconds
-woverlap = 66; % window overlap in percent
-wfunc = @blackmanharris; % window function
+wsize = 20; % window size in milliseconds
+woverlap = 50; % window overlap in percent
+wfunc = @hamming; % window function
 
 wsizen = ceil( wsize/1000 * fS ); % windowing in number of samples
 woverlapn = ceil( woverlap/100 * wsize/1000 * fS );
 wstriden = wsizen - woverlapn;
 
-nsegs = ceil( N / wstriden ); % number of segments
+nsegs = floor( N / wstriden ); % number of segments
 
 Nz = (nsegs-1)*wstriden + wsizen; % zero-pad signal
-xiz = cat( 1, xi, zeros( Nz - N, 1 ) );
+xiz = cat( 1, xif, zeros( Nz - N, 1 ) );
 
 xj = zeros( wsizen, nsegs ); % split segments
 tj = zeros( 1, nsegs );
@@ -36,7 +58,7 @@ for i = 1:nsegs
 end
 
     % -----------------------------------------------------------------------
-    % fourier transform to power spectra
+    % compute spectrogram
     % -----------------------------------------------------------------------
 fftsize = 4096;
 
@@ -56,42 +78,155 @@ end
 f(f < 0) = []; % positive frequencies only
 f = f(2:end); % remove DC
 
-Pj(f > 4000, :) = []; % frequency band limit
-f(f > 4000) = [];
+	% -----------------------------------------------------------------------
+	% voice detection
+	% -----------------------------------------------------------------------
+Pj(f > 1000, :) = []; % frequency band limit
+f(f > 1000) = [];
+
+		% power weighted spectral flatness
+pwsf = geomean( Pj, 1 ) ./ mean( Pj, 1 ); % spectral flatness
+pwsf = sum( Pj, 1 ) .* pwsf; % power weightening
+
+		% adaptive thresholding
+smin = min( pwsf );
+smax = max( pwsf );
+
+pwsf1 = smin * (1 + 2*log10( smax/smin ));
+pwsf2 = pwsf1 + 0.25*(mean( pwsf(pwsf > pwsf1) ) - pwsf1);
+
+		% endpoint decision
+va = false( nsegs, 1 ); % pre-allocation
+
+state = 1;
+statelen = 0;
+
+for i = 1:nsegs
+	switch state
+		case 1 % no activity
+			if pwsf(i) > pwsf1 % start potential activity
+				state = 2;
+				statelen = 0;
+			end
+		case 2 % potential activity
+			if pwsf(i) >= pwsf2 % assure (past) activity
+				va(i-statelen:i) = true;
+				state = 3;
+				statelen = 0;
+			elseif pwsf(i) <= pwsf1 % deny activity
+				state = 1;
+				statelen = 0;
+			end
+		case 3 % assured activity
+			if pwsf(i) <= pwsf1 % stop activity
+				state = 1;
+				statelen = 0;
+			else % continue activity
+				va(i) = true;
+			end
+	end
+
+	statelen = statelen + 1;
+end
+
+	% -----------------------------------------------------------------------
+	% speech detection
+	% -----------------------------------------------------------------------
+fmin = 200; % speech subband (assume voicing)
+fmax = 500;
+
+sbpw = sum( Pj(f >= fmin & f <= fmax, :), 1 );
+
+	% adaptive thresholds, SEE: [1]
+smin = min( sbpw );
+smax = max( sbpw );
+
+sbpw1 = smin * (1 + 2*log10( smax/smin ));
+sbpw2 = sbpw1 + 0.25*(mean( sbpw(sbpw > sbpw1) ) - sbpw1);
+
+	% validate voice activities
+dva = diff( [false; va; false] );
+
+starts = find( dva == 1 );
+stops = find( dva == -1 ) - 1;
+
+sa = va; % pre-allocation
+
+for i = 1:numel( starts )
+	if ~any( sbpw(starts(i):stops(i)) > sbpw2 )
+		sa(starts(i):stops(i)) = false; % subband must be present
+	end
+end
 
 	% -----------------------------------------------------------------------
 	% plot waveform
 	% -----------------------------------------------------------------------
-if exist( 'fig1', 'var' ) ~= 1 || ~ishandle( fig1 ) % prepare figure window
-	fig1 = figure( ...
-		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
-		'PaperPosition', [0, 0, 8, 5], ...
-		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
-		'defaultAxesNextPlot', 'add', ...
-		'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
-		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
-end
+%if exist( 'fig1', 'var' ) ~= 1 || ~ishandle( fig1 ) % prepare figure window
+	%fig1 = figure( ...
+		%'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
+		%'PaperPosition', [0, 0, 8, 5], ...
+		%'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
+		%'defaultAxesNextPlot', 'add', ...
+		%'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
+		%'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
+%end
 
-figure( fig1 ); % set and clear current figure
-clf( fig1 );
+%figure( fig1 ); % set and clear current figure
+%clf( fig1 );
 
-set( fig1, 'Name', sprintf( 'WAVEFORM (%dHz, %dbit)', fS, nS ) ); % set labels
-title( get( fig1, 'Name' ) );
+%set( fig1, 'Name', sprintf( 'WAVEFORM (%dHz, %dbit)', fS, nS ) ); % set labels
+%title( get( fig1, 'Name' ) );
 
-xlabel( 'time in seconds' );
-ylabel( 'amplitude' );
+%xlabel( 'time in seconds' );
+%ylabel( 'amplitude' );
 
-xlim( [0, L] ); % set axes
-ylim( [-1, 1] * 1.1 );
+%xlim( [0, L] ); % set axes
+%ylim( [-1, 1] * 1.1 );
 
-plot( ti, xi, ... % plot linear waveform
-	'Color', 'blue', 'LineWidth', 2 );
+%plot( ti, xi, ... % plot linear waveform
+	%'Color', 'blue', 'LineWidth', 2 );
 
 	% -----------------------------------------------------------------------
 	% plot spectrogram
 	% -----------------------------------------------------------------------
-if exist( 'fig2', 'var' ) ~= 1 || ~ishandle( fig2 ) % prepare figure window
-	fig2 = figure( ...
+%if exist( 'fig2', 'var' ) ~= 1 || ~ishandle( fig2 ) % prepare figure window
+	%fig2 = figure( ...
+		%'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
+		%'PaperPosition', [0, 0, 8, 5], ...
+		%'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
+		%'defaultAxesNextPlot', 'add', ...
+		%'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
+		%'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
+%end
+
+%figure( fig2 ); % set and clear current figure
+%clf( fig2 );
+
+%set( fig2, 'Name', sprintf( 'SPECTROGRAM (%dms, %d%%)', wsize, woverlap ) ); % set labels
+%title( get( fig2, 'Name' ) );
+
+%xlabel( 'time in seconds' );
+%ylabel( 'frequency in hertz' );
+
+%xlim( [0, L] ); % set axes
+%ylim( [min( f ), max( f )] );
+
+%colormap( flipud( colormap( 'gray' ) ) ); % plot spectral powers
+%imagesc( tj, f, 10 * log10( Pj ) );
+
+%plot( [0, L], fmin * [1, 1], ... % thresholds
+	%'Color', 'blue', 'LineWidth', 2 );
+%plot( [0, L], fmax * [1, 1], ...
+	%'Color', 'blue', 'LineWidth', 2 );
+
+%h = colorbar( 'EastOutside' ); % legend
+%ylabel( h, 'power in decibel' );
+
+	% -----------------------------------------------------------------------
+	% plot voice detection
+	% -----------------------------------------------------------------------
+if exist( 'fig3', 'var' ) ~= 1 || ~ishandle( fig3 ) % prepare figure window
+	fig3 = figure( ...
 		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
 		'PaperPosition', [0, 0, 8, 5], ...
 		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
@@ -100,23 +235,54 @@ if exist( 'fig2', 'var' ) ~= 1 || ~ishandle( fig2 ) % prepare figure window
 		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
 end
 
-figure( fig2 ); % set and clear current figure
-clf( fig2 );
+figure( fig3 ); % set and clear current figure
+clf( fig3 );
 
-set( fig2, 'Name', sprintf( 'SPECTROGRAM (%dms, %d%%)', wsize, woverlap ) ); % set labels
-title( get( fig2, 'Name' ) );
+set( fig3, 'Name', 'VOICE DETECTION' ); % set labels
+title( get( fig3, 'Name' ) );
 
 xlabel( 'time in seconds' );
-ylabel( 'frequency in hertz' );
+ylabel( {'power weighted spectral', 'flatness in decibel'} );
 
 xlim( [0, L] ); % set axes
-ylim( [min( f ), max( f )] );
 
-colormap( flipud( colormap( 'gray' ) ) );
-imagesc( tj, f, 10 * log10( Pj ) );
+stairs( tj - mean( diff( tj ) ) / 2, 10 * log10( pwsf ), ... % plot power weighted spectral flatness
+	'Color', 'blue', 'LineWidth', 2 );
+plot( [0, L], 10 * log10( pwsf1 ) * [1, 1], ... % thresholds
+	'Color', 'red', 'LineWidth', 2 );
+plot( [0, L], 10 * log10( pwsf2 ) * [1, 1], ...
+	'Color', 'red', 'LineWidth', 2 );
 
-%h = colorbar( 'EastOutside' ); % legend
-%ylabel( h, 'power in decibel' );
+	% -----------------------------------------------------------------------
+	% plot voice detection
+	% -----------------------------------------------------------------------
+if exist( 'fig4', 'var' ) ~= 1 || ~ishandle( fig4 ) % prepare figure window
+	fig4 = figure( ...
+		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
+		'PaperPosition', [0, 0, 8, 5], ...
+		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
+		'defaultAxesNextPlot', 'add', ...
+		'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
+		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
+end
+
+figure( fig4 ); % set and clear current figure
+clf( fig4 );
+
+set( fig4, 'Name', 'SPEECH DETECTION' ); % set labels
+title( get( fig4, 'Name' ) );
+
+xlabel( 'time in seconds' );
+ylabel( {'subband power', 'in decibel'} );
+
+xlim( [0, L] ); % set axes
+
+stairs( tj - mean( diff( tj ) ) / 2, 10 * log10( sbpw ), ... % plot power weighted spectral flatness
+	'Color', 'blue', 'LineWidth', 2 );
+plot( [0, L], 10 * log10( sbpw1 ) * [1, 1], ... % thresholds
+	'Color', 'red', 'LineWidth', 2 );
+plot( [0, L], 10 * log10( sbpw2 ) * [1, 1], ...
+	'Color', 'red', 'LineWidth', 2 );
 
 warning( ws );
 

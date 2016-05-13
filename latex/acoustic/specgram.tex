@@ -29,7 +29,7 @@
 			\end{figure}
 		\item \textbf{exercise}:
 			\begin{itemize}
-				\item influence of \textbf{window size} $\rightarrow$ \textbf{broad band} vs. \textbf{narrow band} spectrogram
+				\item influence of \textbf{window size} $\rightarrow$ \textbf{broad-band} vs. \textbf{narrow-band} spectrogram
 			\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -37,6 +37,17 @@
 \begin{frame}[fragile] % -------------------------------------------------------------
 	\frametitle{Spectrograms}
 	\begin{itemize}
+		\item \textbf{broad-band spectrograms} have good temporal but poor spectral resolution
+		\item \textbf{narrow-band spectrograms} have poor temporal but good spectral resolution
+			\begin{table}
+				\hspace{-2em}
+				\small
+				\begin{tabular}{rcc}
+					spectrogram:&\textbf{broad-band}&\textbf{narrow-band}\\
+					window size:&$<\!20\,\textrm{ms}$&$>\!20\,\textrm{ms}$\\
+					structures:&\textbf{formants}&\textbf{harmonics}
+				\end{tabular}
+			\end{table}
 		\item set up windowing
 			\begin{code}
 >> wsize = 10; \color{medium}% window size in milliseconds
