@@ -5,9 +5,45 @@
 \begin{frame} % -------------------------------------------------------------
 	\frametitle{Activity detection}
 	\begin{itemize}
-		\item often \textbf{experimental data} contains a lot of noise and little of information
-		\item for \textbf{automatic processing} restriction to important parts is (usually) essential
+		\item \textbf{experimental data} often contain a lot of noise and little of information
+		\item for \textbf{automatic processing} restriction to important parts is essential
+		\item consider the following experiment:
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.8\linewidth}
+					\cfboxc{neutral}{\includegraphics[width=\linewidth]{images/cdp.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item with features of interest:
+			\begin{itemize}
+				\item responded syllable (out of a specific set $\rightarrow$ classifcation task)
+				\item voice onset time ($\rightarrow$ \textbf{landmarks detection})
+				\item formants onsets (frequency and time $\rightarrow$ \textbf{formants tracking/detection})
+			\end{itemize}
+		\item all of these require an (human) \textbf{activity detection} as the initial processing pass
 	\end{itemize}
 \end{frame}
 
+\begin{frame} % -------------------------------------------------------------
+	\frametitle{Activity detection}
+	\begin{itemize}
+		\item in literature usually called \textbf{voice activity detection} (VAD)
+		\item general use in (mobile/internet) telephony to reduce transmission bandwidth
+		\item exploiting \textbf{spectral differences} in human speech and ambient sound/noise
+			\begin{itemize}
+				\item TODO: office sound (freesound.org)
+				\item TODO: speech recording
+			\end{itemize}
+		\item there are many solutions/algorithms for a lot of different environments
+			\begin{itemize}
+				\item TODO: name some!
+			\end{itemize}
+	\end{itemize}
+\end{frame}
 
+\begin{frame} % -------------------------------------------------------------
+	\frametitle{Activity detection}
+	\begin{itemize}
+		\item bla
+	\end{itemize}
+\end{frame}

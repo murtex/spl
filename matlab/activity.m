@@ -154,7 +154,7 @@ sa = va; % pre-allocation
 
 for i = 1:numel( starts )
 	if ~any( sbpw(starts(i):stops(i)) > sbpw2 )
-		sa(starts(i):stops(i)) = false; % subband must be present
+		sa(starts(i):stops(i)) = false; % voicin-subband must be present for speech
 	end
 end
 
