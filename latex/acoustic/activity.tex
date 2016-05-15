@@ -20,7 +20,7 @@
 				\item voice onset time ($\rightarrow$ \textbf{landmarks detection})
 				\item formants onsets (frequency and time $\rightarrow$ \textbf{formants tracking/detection})
 			\end{itemize}
-		\item all of these require (human) \textbf{activity detection} as a initial processing pass
+		\item all of these require (human) \textbf{activity detection} as an initial processing pass
 	\end{itemize}
 \end{frame}
 
@@ -57,6 +57,40 @@
 \begin{frame} % -------------------------------------------------------------
 	\frametitle{Activity detection}
 	\begin{itemize}
-		\item bla
+		\item \textbf{example}: \texttt{matlab/activity.m} (\sound[automute, inlinesound, samplingrate=44100, bitspersample=16, channels=1, encoding=Signed, externalviewer]{\texttt{matlab/tam.wav}}{matlab/tam.wav})
+		\item applying an \textbf{equal loudness filter} and limiting to \textbf{frequency band} $0\ldots1000\,\textrm{Hz}$
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/ac1.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/ac2.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item \textbf{adaptive thresholds} for power-weighted \textbf{spectral flatness} and \textbf{subband power}
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/ac3.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/ac4.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item combining \textbf{activity states} based on thresholds gives overall \textbf{voice activity}
 	\end{itemize}
 \end{frame}
+
+\begin{frame} % -------------------------------------------------------------
+	\frametitle{Activity detection/References}
+	\begin{itemize}
+		\item D.\,Robinson. \href{http://replaygain.hydrogenaud.io/proposal/equal_loudness.html}{\emph{Equal loudness filter.}} 2001.
+		\item D.\,Burileanu, L.\,Pascalin, C.\,Burileanu, M.\,Puchiu. \href{http://dx.doi.org/10.1007/3-540-45323-7_30}{\emph{An adaptive and fast speech detection algorithm.}} Springer, 2000.
+		\item M.\,Prcin, L.\,Müller. \href{http://dx.doi.org/10.1007/3-540-46154-X_42}{\emph{Heuristic and statistical methods for speech/non-speech detector design.}} Springer, 2002.
+		\item Y.\,Ma, A.\,Nishihara. \href{http://dx.doi.org/10.1186/1687-4722-2013-21}{\emph{Efficient voice activity detection algorithm using long-term spectral flatness measure.}} Springer, 2013.
+	\end{itemize}
+\end{frame}
+

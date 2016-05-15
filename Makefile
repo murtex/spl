@@ -29,6 +29,7 @@ images:
 	#cd matlab; matlab -nosplash -nodesktop -r "specgram; print( fig1, '../images/tawf2', '-depsc2', '-loose' ); print( fig2, '../images/tasg2', '-depsc2', '-loose' ); exit();"
 	#cd matlab; matlab -nosplash -nodesktop -r "specgram; print( fig1, '../images/chwf', '-depsc2', '-loose' ); print( fig2, '../images/chsg', '-depsc2', '-loose' ); exit();"
 	#cd matlab; matlab -nosplash -nodesktop -r "specgram; print( fig1, '../images/hkwf', '-depsc2', '-loose' ); print( fig2, '../images/hksg', '-depsc2', '-loose' ); exit();"
+	cd matlab; matlab -nosplash -nodesktop -r "activity; print( fig1, '../images/ac1', '-depsc2', '-loose' ); print( fig2, '../images/ac2', '-depsc2', '-loose' ); print( fig3, '../images/ac3', '-depsc2', '-loose' ); print( fig4, '../images/ac4', '-depsc2', '-loose' ); exit();"
 
 clean:
 	rm -f slides.*
