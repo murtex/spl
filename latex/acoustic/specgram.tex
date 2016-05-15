@@ -64,7 +64,7 @@
 		\item plot the spectrogram
 			\begin{code}
 >> colormap( flipud( colormap( 'gray' ) ) ); \color{medium} % set color coding
->> imagesc( ti, fk, Pk ); \color{medium} % plot spectral powers
+>> imagesc( ti, fk, Pk .^ 0.1 ); \color{medium} % plot spectral powers
 			\end{code}
 	\end{itemize}
 \end{frame}

@@ -28,16 +28,29 @@
 	\frametitle{Activity detection}
 	\begin{itemize}
 		\item in literature usually called \textbf{voice activity detection} (VAD)
-		\item general use in (mobile/internet) telephony to reduce transmission bandwidth
 		\item exploiting \textbf{spectral differences} in human speech and ambient sound/noise
-			\begin{itemize}
-				\item TODO: office sound (freesound.org)
-				\item TODO: speech recording
-			\end{itemize}
-		\item there are many solutions/algorithms for a lot of different environments
-			\begin{itemize}
-				\item TODO: name some!
-			\end{itemize}
+		\item \textbf{example}: \texttt{matlab/specgram.m} (\sound[automute, inlinesound, samplingrate=44100, bitspersample=16, channels=1, encoding=Signed, externalviewer]{\texttt{matlab/chair.wav}}{matlab/chair.wav})
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/chwf.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/chsg.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item \textbf{example}: \texttt{matlab/specgram.m} (\sound[automute, inlinesound, samplingrate=44100, bitspersample=16, channels=1, encoding=Signed, externalviewer]{\texttt{matlab/haiku.wav}}{matlab/haiku.wav})
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/hkwf.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/hksg.eps}}
+				\end{subfigure}
+			\end{figure}
 	\end{itemize}
 \end{frame}
 

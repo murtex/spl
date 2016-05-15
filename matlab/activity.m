@@ -161,63 +161,63 @@ end
 	% -----------------------------------------------------------------------
 	% plot waveform
 	% -----------------------------------------------------------------------
-%if exist( 'fig1', 'var' ) ~= 1 || ~ishandle( fig1 ) % prepare figure window
-	%fig1 = figure( ...
-		%'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
-		%'PaperPosition', [0, 0, 8, 5], ...
-		%'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
-		%'defaultAxesNextPlot', 'add', ...
-		%'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
-		%'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
-%end
+if exist( 'fig1', 'var' ) ~= 1 || ~ishandle( fig1 ) % prepare figure window
+	fig1 = figure( ...
+		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
+		'PaperPosition', [0, 0, 8, 5], ...
+		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
+		'defaultAxesNextPlot', 'add', ...
+		'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
+		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
+end
 
-%figure( fig1 ); % set and clear current figure
-%clf( fig1 );
+figure( fig1 ); % set and clear current figure
+clf( fig1 );
 
-%set( fig1, 'Name', sprintf( 'WAVEFORM (%dHz, %dbit)', fS, nS ) ); % set labels
-%title( get( fig1, 'Name' ) );
+set( fig1, 'Name', sprintf( 'WAVEFORM (%dHz, %dbit)', fS, nS ) ); % set labels
+title( get( fig1, 'Name' ) );
 
-%xlabel( 'time in seconds' );
-%ylabel( 'amplitude' );
+xlabel( 'time in seconds' );
+ylabel( 'amplitude' );
 
-%xlim( [0, L] ); % set axes
-%ylim( [-1, 1] * 1.1 );
+xlim( [0, L] ); % set axes
+ylim( [-1, 1] * 1.1 );
 
-%plot( ti, xi, ... % plot linear waveform
-	%'Color', 'blue', 'LineWidth', 2 );
+plot( ti, xi, ... % plot linear waveform
+	'Color', 'blue', 'LineWidth', 2 );
 
 	% -----------------------------------------------------------------------
 	% plot spectrogram
 	% -----------------------------------------------------------------------
-%if exist( 'fig2', 'var' ) ~= 1 || ~ishandle( fig2 ) % prepare figure window
-	%fig2 = figure( ...
-		%'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
-		%'PaperPosition', [0, 0, 8, 5], ...
-		%'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
-		%'defaultAxesNextPlot', 'add', ...
-		%'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
-		%'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
-%end
+if exist( 'fig2', 'var' ) ~= 1 || ~ishandle( fig2 ) % prepare figure window
+	fig2 = figure( ...
+		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
+		'PaperPosition', [0, 0, 8, 5], ...
+		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
+		'defaultAxesNextPlot', 'add', ...
+		'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
+		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
+end
 
-%figure( fig2 ); % set and clear current figure
-%clf( fig2 );
+figure( fig2 ); % set and clear current figure
+clf( fig2 );
 
-%set( fig2, 'Name', sprintf( 'SPECTROGRAM (%dms, %d%%)', wsize, woverlap ) ); % set labels
-%title( get( fig2, 'Name' ) );
+set( fig2, 'Name', sprintf( 'SPECTROGRAM (%dms, %d%%)', wsize, woverlap ) ); % set labels
+title( get( fig2, 'Name' ) );
 
-%xlabel( 'time in seconds' );
-%ylabel( 'frequency in hertz' );
+xlabel( 'time in seconds' );
+ylabel( 'frequency in hertz' );
 
-%xlim( [0, L] ); % set axes
-%ylim( [min( f ), max( f )] );
+xlim( [0, L] ); % set axes
+ylim( [min( f ), max( f )] );
 
-%colormap( flipud( colormap( 'gray' ) ) ); % plot spectral powers
-%imagesc( tj, f, 10 * log10( Pj ) );
+colormap( flipud( colormap( 'gray' ) ) ); % plot spectral powers
+imagesc( tj, f, Pj .^ 0.1 );
 
-%plot( [0, L], fmin * [1, 1], ... % thresholds
-	%'Color', 'blue', 'LineWidth', 2 );
-%plot( [0, L], fmax * [1, 1], ...
-	%'Color', 'blue', 'LineWidth', 2 );
+plot( [0, L], fmin * [1, 1], ... % thresholds
+	'Color', 'blue', 'LineWidth', 2 );
+plot( [0, L], fmax * [1, 1], ...
+	'Color', 'blue', 'LineWidth', 2 );
 
 %h = colorbar( 'EastOutside' ); % legend
 %ylabel( h, 'power in decibel' );
@@ -225,64 +225,64 @@ end
 	% -----------------------------------------------------------------------
 	% plot voice detection
 	% -----------------------------------------------------------------------
-if exist( 'fig3', 'var' ) ~= 1 || ~ishandle( fig3 ) % prepare figure window
-	fig3 = figure( ...
-		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
-		'PaperPosition', [0, 0, 8, 5], ...
-		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
-		'defaultAxesNextPlot', 'add', ...
-		'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
-		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
-end
+%if exist( 'fig3', 'var' ) ~= 1 || ~ishandle( fig3 ) % prepare figure window
+	%fig3 = figure( ...
+		%'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
+		%'PaperPosition', [0, 0, 8, 5], ...
+		%'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
+		%'defaultAxesNextPlot', 'add', ...
+		%'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
+		%'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
+%end
 
-figure( fig3 ); % set and clear current figure
-clf( fig3 );
+%figure( fig3 ); % set and clear current figure
+%clf( fig3 );
 
-set( fig3, 'Name', 'VOICE DETECTION' ); % set labels
-title( get( fig3, 'Name' ) );
+%set( fig3, 'Name', 'VOICE DETECTION' ); % set labels
+%title( get( fig3, 'Name' ) );
 
-xlabel( 'time in seconds' );
-ylabel( {'power weighted spectral', 'flatness in decibel'} );
+%xlabel( 'time in seconds' );
+%ylabel( {'power weighted spectral', 'flatness in decibel'} );
 
-xlim( [0, L] ); % set axes
+%xlim( [0, L] ); % set axes
 
-stairs( tj - mean( diff( tj ) ) / 2, 10 * log10( pwsf ), ... % plot power weighted spectral flatness
-	'Color', 'blue', 'LineWidth', 2 );
-plot( [0, L], 10 * log10( pwsf1 ) * [1, 1], ... % thresholds
-	'Color', 'red', 'LineWidth', 2 );
-plot( [0, L], 10 * log10( pwsf2 ) * [1, 1], ...
-	'Color', 'red', 'LineWidth', 2 );
+%stairs( tj - mean( diff( tj ) ) / 2, 10 * log10( pwsf ), ... % plot power weighted spectral flatness
+	%'Color', 'blue', 'LineWidth', 2 );
+%plot( [0, L], 10 * log10( pwsf1 ) * [1, 1], ... % thresholds
+	%'Color', 'red', 'LineWidth', 2 );
+%plot( [0, L], 10 * log10( pwsf2 ) * [1, 1], ...
+	%'Color', 'red', 'LineWidth', 2 );
 
 	% -----------------------------------------------------------------------
 	% plot voice detection
 	% -----------------------------------------------------------------------
-if exist( 'fig4', 'var' ) ~= 1 || ~ishandle( fig4 ) % prepare figure window
-	fig4 = figure( ...
-		'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
-		'PaperPosition', [0, 0, 8, 5], ...
-		'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
-		'defaultAxesNextPlot', 'add', ...
-		'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
-		'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
-end
+%if exist( 'fig4', 'var' ) ~= 1 || ~ishandle( fig4 ) % prepare figure window
+	%fig4 = figure( ...
+		%'Color', [0.9, 0.9, 0.9], 'InvertHardcopy', 'off', ...
+		%'PaperPosition', [0, 0, 8, 5], ...
+		%'defaultAxesFontName', 'DejaVu Sans Mono', 'defaultAxesFontSize', 16, 'defaultAxesFontWeight', 'bold', ...
+		%'defaultAxesNextPlot', 'add', ...
+		%'defaultAxesBox', 'on', 'defaultAxesLayer', 'top', ...
+		%'defaultAxesXGrid', 'on', 'defaultAxesYGrid', 'on' );
+%end
 
-figure( fig4 ); % set and clear current figure
-clf( fig4 );
+%figure( fig4 ); % set and clear current figure
+%clf( fig4 );
 
-set( fig4, 'Name', 'SPEECH DETECTION' ); % set labels
-title( get( fig4, 'Name' ) );
+%set( fig4, 'Name', 'SPEECH DETECTION' ); % set labels
+%title( get( fig4, 'Name' ) );
 
-xlabel( 'time in seconds' );
-ylabel( {'subband power', 'in decibel'} );
+%xlabel( 'time in seconds' );
+%ylabel( {'subband power', 'in decibel'} );
 
-xlim( [0, L] ); % set axes
+%xlim( [0, L] ); % set axes
 
-stairs( tj - mean( diff( tj ) ) / 2, 10 * log10( sbpw ), ... % plot power weighted spectral flatness
-	'Color', 'blue', 'LineWidth', 2 );
-plot( [0, L], 10 * log10( sbpw1 ) * [1, 1], ... % thresholds
-	'Color', 'red', 'LineWidth', 2 );
-plot( [0, L], 10 * log10( sbpw2 ) * [1, 1], ...
-	'Color', 'red', 'LineWidth', 2 );
+%stairs( tj - mean( diff( tj ) ) / 2, 10 * log10( sbpw ), ... % plot power weighted spectral flatness
+	%'Color', 'blue', 'LineWidth', 2 );
+%plot( [0, L], 10 * log10( sbpw1 ) * [1, 1], ... % thresholds
+	%'Color', 'red', 'LineWidth', 2 );
+%plot( [0, L], 10 * log10( sbpw2 ) * [1, 1], ...
+	%'Color', 'red', 'LineWidth', 2 );
 
 warning( ws );
 

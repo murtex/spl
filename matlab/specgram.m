@@ -15,8 +15,8 @@ ti = linspace( 0, L, N ); % discrete time values
     % compute spectrogram
 	% -----------------------------------------------------------------------
 wsize = 10; % window size in milliseconds, EXERCISE
-woverlap = 66; % window overlap in percent, EXERCISE
-wfunc = @blackmanharris; % window function, EXERCISE
+woverlap = 50; % window overlap in percent, EXERCISE
+wfunc = @hamming; % window function, EXERCISE
 
 [Xk, fk, tj] = spectrogram( xi, ... % signal
     wfunc( ceil( wsize/1000 * fS ) ), ... % window function values
@@ -29,11 +29,7 @@ fk = fk(2:end);
 Xk(fk > 4000, :) = []; % limit frequencies to 4kHz
 fk(fk > 4000) = [];
 
-	% -----------------------------------------------------------------------
-    % convert to power spectrum
-	% -----------------------------------------------------------------------
-Pk = abs( Xk ) .^ 2;
-PkdB = 10 * log10( Pk );
+Pk = abs( Xk ) .^ 2; % convert to power values
 
 	% -----------------------------------------------------------------------
 	% plot waveform
@@ -91,7 +87,7 @@ xlim( [0, L] ); % set axes
 ylim( [min( fk ), max( fk )] );
 
 colormap( flipud( colormap( 'gray' ) ) );
-imagesc( tj, fk, PkdB );
+imagesc( tj, fk, Pk .^ 0.1 );
 
 warning( ws );
 
