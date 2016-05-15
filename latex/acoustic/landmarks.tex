@@ -4,5 +4,40 @@
 
 \begin{frame} % -------------------------------------------------------------
 	\frametitle{Landmarks detection}
+	\begin{itemize}
+		\item \textbf{example}: \texttt{matlab/landmarks.m} (\sound[automute, inlinesound, samplingrate=44100, bitspersample=16, channels=1, encoding=Signed, externalviewer]{\texttt{matlab/tam.wav}}{matlab/tam.wav})
+		\item applying an \textbf{equal loudness filter} and limiting to \textbf{frequency band} $200\ldots500\,\textrm{Hz}$
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/lm1.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/lm2.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item \textbf{power rate-of-rise} and sophisticated \textbf{peak detection}, thresholding and pairing
+			\begin{figure}
+				\centering
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/lm3.eps}}
+				\end{subfigure}
+				\hspace{0.01\linewidth}
+				\begin{subfigure}[c]{0.40\linewidth}
+					\cfbox{neutral}{\includegraphics[width=\linewidth]{images/lm4.eps}}
+				\end{subfigure}
+			\end{figure}
+		\item computation of \textbf{plosion indices} to find release bursts
+	\end{itemize}
 \end{frame}
 
+\begin{frame} % -------------------------------------------------------------
+	\frametitle{Landmarks detection/References}
+	\begin{itemize}
+		\item D.\,Robinson. \href{http://replaygain.hydrogenaud.io/proposal/equal_loudness.html}{\emph{Equal loudness filter.}} 2001.
+		\item P.\,Mermelstein. \href{http://dx.doi.org/10.1121/1.380738}{\emph{Automatic segmentation of speech into syllabic units.}} ASA, 1975.
+		\item S.\,Liu. \href{http://dx.doi.org/1721.1/29188}{\emph{Landmark detection for distinctive feature-based speech recognition.}} MIT, 1995.
+		\item T.\,Ananthapadmanabha, A.\,Prathosh, A.\,Ramakrishnan. \href{http://dx.doi.org/10.1121/1.4836055}{\emph{Detection of the closure-burst transitions of stops and affricates in continuous speech using the plosion index.}} ASA, 2014
+	\end{itemize}
+\end{frame}

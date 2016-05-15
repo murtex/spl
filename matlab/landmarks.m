@@ -36,8 +36,8 @@ xif = filter( Bb, Ab, xif );
     % -----------------------------------------------------------------------
     % segment signal
     % -----------------------------------------------------------------------
-wsize = 20; % window size in milliseconds
-woverlap = 50; % window overlap in percent
+wsize = 15; % window size in milliseconds
+woverlap = 66; % window overlap in percent
 wfunc = @hamming; % window function
 
 wsizen = ceil( wsize/1000 * fS ); % windowing in number of samples
@@ -60,7 +60,7 @@ end
     % -----------------------------------------------------------------------
     % compute spectrogram
     % -----------------------------------------------------------------------
-fftsize = 4096;
+fftsize = 8192;
 
 fNy = fS / 2; % prepare frequencies
 f = (0:fftsize-1) / fftsize * fS;
@@ -86,87 +86,62 @@ end
 f(f < 0) = []; % positive frequencies only
 f = f(2:end); % remove DC
 
-	% -----------------------------------------------------------------------
-	% voice detection
-	% -----------------------------------------------------------------------
-fmin = 0; % frequency band limit
-fmax = 1000;
+    % -----------------------------------------------------------------------
+    % glottal activity detection
+    % -----------------------------------------------------------------------
+fmin = 200; % frequency band limit
+fmax = 500;
 
 Pj(f < fmin | f > fmax, :) = [];
 f(f < fmin | f > fmax) = [];
 
-		% power weighted spectral flatness
-pwsf = geomean( Pj, 1 ) ./ mean( Pj, 1 ); % spectral flatness
-pwsf = sum( Pj, 1 ) .* pwsf; % power weightening
+gp = max( Pj, [], 1 ); % follow most prominent frequency
 
-		% adaptive thresholding
-smin = min( pwsf );
-smax = max( pwsf );
+		% undo windowing
+gpx = kron( gp, ones( 1, wstriden ) );
+gpx(end+1:end+woverlapn) = repmat( gpx(end), woverlapn, 1 );
+gpx = cat( 2, NaN( 1, round( (tj(1) - mean( diff( tj ) ) / 2) * fS ) ), gpx );
 
-pwsf1 = smin * (1 + 2*log10( smax/smin ));
-pwsf2 = pwsf1 + 0.25*(mean( pwsf(pwsf > pwsf1) ) - pwsf1);
+		% smoothing
+avg = ones( 1, 2*woverlapn+1 ) / (2*woverlapn+1);
+gpx = filter2( avg, gpx, 'full' );
+gpx(1:numel( gpx )-woverlapn) = gpx(woverlapn+1:end);
 
-		% endpoint decision
-va = false( nsegs, 1 ); % pre-allocation
+gpx = gpx(1:N);
+gpx = 10 * log10( gpx );
 
-state = 1;
-statelen = 0;
+		% rate of rise
+dt = 25; % milliseconds
+ldt = floor( (dt/1000 * fS) / 2 );
+rdt = ceil( (dt/1000 * fS) / 2 );
 
-for i = 1:nsegs
-	switch state
-		case 1 % no activity
-			if pwsf(i) > pwsf1 % start potential activity
-				state = 2;
-				statelen = 0;
-			end
-		case 2 % potential activity
-			if pwsf(i) >= pwsf2 % assure (past) activity
-				va(i-statelen:i) = true;
-				state = 3;
-				statelen = 0;
-			elseif pwsf(i) <= pwsf1 % deny activity
-				state = 1;
-				statelen = 0;
-			end
-		case 3 % assured activity
-			if pwsf(i) <= pwsf1 % stop activity
-				state = 1;
-				statelen = 0;
-			else % continue activity
-				va(i) = true;
-			end
-	end
-
-	statelen = statelen + 1;
+gpr = zeros( size( gpx ) );
+for i = 1:N
+	li = max( 1, i - ldt );
+	ri = min( N, i + rdt );
+	gpr(i) = gpx(ri) - gpx(li);
 end
 
+		% peaks
+gthresh = 6; % peak threshold
+schwalen = ceil( 20/1000 * fS ); % schwa
+schwapow = -20;
+
+gcp = peak( gpr, gthresh ); % candidates
+gp = peakg( gcp, gpx, gpr, schwalen, schwapow ); % chosen
+
 	% -----------------------------------------------------------------------
-	% speech detection
+	% burst detection
 	% -----------------------------------------------------------------------
-vfmin = 200; % voicing subband
-vfmax = 500;
+pidelta = 1;
+piwidth = 10;
+pithreshs = [20, 10];
 
-sbpw = sum( Pj(f >= vfmin & f <= vfmax, :), 1 );
+pidx = plosion( xif, ceil( pidelta/1000 * fS ), ceil( piwidth/1000 * fS ) );
 
-	% adaptive thresholds, SEE: [1]
-smin = min( sbpw );
-smax = max( sbpw );
-
-sbpw1 = smin * (1 + 2*log10( smax/smin ));
-sbpw2 = sbpw1 + 0.25*(mean( sbpw(sbpw > sbpw1) ) - sbpw1);
-
-	% validate voice activities
-dva = diff( [false; va; false] );
-
-starts = find( dva == 1 );
-stops = find( dva == -1 ) - 1;
-
-sa = va; % pre-allocation
-
-for i = 1:numel( starts )
-	if ~any( sbpw(starts(i):stops(i)) > sbpw2 )
-		sa(starts(i):stops(i)) = false; % voicin-subband must be present for speech
-	end
+boi = find( pidx >= max( pithreshs ), 1, 'first' ); % upper threshold first
+if isempty( boi )
+	boi = find( pidx >= min( pithreshs ), 1, 'first' ); % lower threshold next
 end
 
 	% -----------------------------------------------------------------------
@@ -194,12 +169,27 @@ ylabel( 'amplitude' );
 xlim( [0, L] ); % set axes
 ylim( [-1, 1] * 1.1 );
 
-h1 = stairs( tj - mean( diff( tj ) ) / 2, sa, ... % plot activity
-	'Color', 'red', 'LineWidth', 2, 'DisplayName', 'activity' );
-h2 = plot( ti, xi, ... % plot linear waveform
+if ~isempty( boi )
+	stem( boi / fS, 1, ...
+		'Color', 'red', 'LineWidth', 2, ...
+		'MarkerSize', 4, 'MarkerFaceColor', 'red', 'ShowBaseLine', 'on' );
+end
+
+if numel( gp ) > 0 % glottal landmarks
+	stem( gp(1) / fS, 1, ...
+		'Color', 'red', 'LineWidth', 2, ...
+		'MarkerSize', 4, 'MarkerFaceColor', 'red', 'ShowBaseLine', 'on' );
+end
+if numel( gp ) > 1
+	stem( gp(2) / fS, -1, ...
+		'Color', 'red', 'LineWidth', 2, ...
+		'MarkerSize', 4, 'MarkerFaceColor', 'red', 'ShowBaseLine', 'on' );
+end
+
+plot( ti, xi, ... % plot linear waveform
 	'Color', 'blue', 'LineWidth', 2, 'DisplayName', 'waveform' );
 
-h = legend( [h1], 'Location', 'southeast' );
+h = legend( {'landmarks'}, 'Location', 'northeast' ); % legend
 set( h, 'Color', [0.9825, 0.9825, 0.9825] );
 
 	% -----------------------------------------------------------------------
@@ -230,19 +220,8 @@ ylim( [fmin, fmax] );
 colormap( flipud( colormap( 'gray' ) ) ); % plot spectral powers
 imagesc( tj, f, Pj .^ 0.1 );
 
-%h1 = stairs( tj - mean( diff( tj ) ) / 2, sa * max( f ), ... % plot activity
-	%'Color', 'red', 'LineWidth', 2, 'DisplayName', 'activity'  );
-
-h2 = plot( [0, L], vfmin * [1, 1], ... % subband
-	'Color', 'blue', 'LineWidth', 2, 'DisplayName', 'subband' );
-plot( [0, L], vfmax * [1, 1], ...
-	'Color', 'blue', 'LineWidth', 2 );
-
-h = legend( [h2], 'Location', 'northeast' );
-set( h, 'Color', [0.9825, 0.9825, 0.9825] );
-
 	% -----------------------------------------------------------------------
-	% plot voice detection
+	% plot glottal activity detection
 	% -----------------------------------------------------------------------
 if exist( 'fig3', 'var' ) ~= 1 || ~ishandle( fig3 ) % prepare figure window
 	fig3 = figure( ...
@@ -257,23 +236,41 @@ end
 figure( fig3 ); % set and clear current figure
 clf( fig3 );
 
-set( fig3, 'Name', 'VOICE DETECTION' ); % set labels
+set( fig3, 'Name', 'GLOTTAL ACTIVITY DETECTION' ); % set labels
 title( get( fig3, 'Name' ) );
 
 xlabel( 'time in seconds' );
-ylabel( {'power weighted spectral', 'flatness in decibel'} );
+ylabel( {'glottal power ROR', sprintf( '(%dms) in decibel', dt )} );
 
 xlim( [0, L] ); % set axes
 
-stairs( tj - mean( diff( tj ) ) / 2, 10 * log10( pwsf ), ... % plot power weighted spectral flatness
+h0 = plot( [0, L], gthresh * [1, 1], ... % thresholds
+	'Color', 'red', 'LineWidth', 2, 'LineStyle', '--', ...
+	'DisplayName', 'thresholds' );
+plot( [0, L], -gthresh * [1, 1], ...
+	'Color', 'red', 'LineWidth', 2, 'LineStyle', '--' );
+
+for i = 1:numel( gcp ) % candidate peaks
+	h1 = stem( gcp / fS, gpr(gcp), ...
+		'Color', 'red', 'LineWidth', 2, 'LineStyle', '--', ...
+		'MarkerSize', 4, 'MarkerFaceColor', 'red', 'ShowBaseLine', 'on', ...
+		'DisplayName', 'candidate peaks' );
+end
+for i = 1:numel( gp ) % chosen peaks
+	h2 = stem( gp / fS, gpr(gp), ...
+		'Color', 'red', 'LineWidth', 2, ...
+		'MarkerSize', 4, 'MarkerFaceColor', 'red', 'ShowBaseLine', 'on', ...
+		'DisplayName', 'chosen peaks' );
+end
+
+plot( ti, gpr, ... % rate of rise
 	'Color', 'blue', 'LineWidth', 2 );
-plot( [0, L], 10 * log10( pwsf1 ) * [1, 1], ... % thresholds
-	'Color', 'red', 'LineWidth', 2 );
-plot( [0, L], 10 * log10( pwsf2 ) * [1, 1], ...
-	'Color', 'red', 'LineWidth', 2 );
+
+h = legend( [h0, h1(1), h2(1)], 'Location', 'northeast' ); % legend
+set( h, 'Color', [0.9825, 0.9825, 0.9825] );
 
 	% -----------------------------------------------------------------------
-	% plot speech detection
+	% plot plosion detection
 	% -----------------------------------------------------------------------
 if exist( 'fig4', 'var' ) ~= 1 || ~ishandle( fig4 ) % prepare figure window
 	fig4 = figure( ...
@@ -288,20 +285,21 @@ end
 figure( fig4 ); % set and clear current figure
 clf( fig4 );
 
-set( fig4, 'Name', 'SPEECH DETECTION' ); % set labels
+set( fig4, 'Name', 'RELEASE BURST DETECTION' ); % set labels
 title( get( fig4, 'Name' ) );
 
 xlabel( 'time in seconds' );
-ylabel( {'subband power', 'in decibel'} );
+ylabel( 'logarithmic plosion index' );
 
 xlim( [0, L] ); % set axes
 
-stairs( tj - mean( diff( tj ) ) / 2, 10 * log10( sbpw ), ... % plot power weighted spectral flatness
+for i = 1:numel( pithreshs ) % thresholds
+	plot( [0, L], log( pithreshs(i) ) * [1, 1], ...
+		'Color', 'red', 'LineWidth', 2, 'LineStyle', '--' );
+end
+
+plot( ti(pidx > eps), log( pidx(pidx > eps) ), ... % plot plosion index
 	'Color', 'blue', 'LineWidth', 2 );
-plot( [0, L], 10 * log10( sbpw1 ) * [1, 1], ... % thresholds
-	'Color', 'red', 'LineWidth', 2 );
-plot( [0, L], 10 * log10( sbpw2 ) * [1, 1], ...
-	'Color', 'red', 'LineWidth', 2 );
 
 warning( ws );
 
