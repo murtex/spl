@@ -11,8 +11,8 @@ N = floor( L * fS );
 
 ti = (0:N-1) / fS; % quantized time values
 
-%xi = sin( 2*pi*f * ti ); % sine wave, EXERCISE!
-%xi = sin( 2*pi*f * ti) + 0.5*sin( 2*pi*3*f * ti ); % mixed sines, EXERCISE!
+xi = sin( 2*pi*f * ti ); % sine wave, EXERCISE!
+xi = sin( 2*pi*f * ti) + 0.5*sin( 2*pi*3*f * ti ); % mixed sines, EXERCISE!
 xi = 2*(2*floor( f * ti ) - floor( 2*f * ti ) + 1) - 1; % square wave, EXERCISE!
 %xi = 2*(ti/f - floor( 1/2 + ti/f )); % sawtooth wave, EXERCISE!
 %xi = 2*abs( 2*(ti/f - floor( 1/2 + ti/f )) ) - 1; % triangle wave, EXERCISE!
@@ -20,7 +20,7 @@ xi = 2*(2*floor( f * ti ) - floor( 2*f * ti ) + 1) - 1; % square wave, EXERCISE!
 	% -----------------------------------------------------------------------
 	% apply a phase shift to test signal
 	% -----------------------------------------------------------------------
-phase = 0; % phase shift in degrees, EXERCISE!
+phase = 90; % phase shift in degrees, EXERCISE!
 xi = circshift( xi, [0, round( f*fS*phase/360 )] );
 
 	% -----------------------------------------------------------------------
@@ -96,6 +96,8 @@ h = legend( {sprintf( 'discrete signal (%.1fHz, @%.1fHz)', f, fS ), 'recompositi
 	'Location', 'southeast' );
 set( h, 'Color', [0.9825, 0.9825, 0.9825] );
 
+print( fig1, 'fdomain_decomp.eps', '-depsc2' );
+
 	% -----------------------------------------------------------------------
 	% plot power spectrum
 	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
@@ -125,4 +127,6 @@ ylim( [0, 1] * 1.1 );
 stem( fk(Pk > eps), Pk(Pk > eps), ... % plot power spectrum
 	'Color', 'red', 'LineWidth', 2, 'MarkerSize', 4, 'MarkerFaceColor', 'red', ...
 	'ShowBaseLine', 'off' );
+
+print( fig2, 'fdomain_powspec.eps', '-depsc2' );
 

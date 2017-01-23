@@ -3,7 +3,7 @@
 .PHONY: images
 .PHONY: clean
 
-all: slides assign1
+all: slides
 
 slides:
 	pdflatex --shell-escape -jobname slides "\input{latex/slides}"

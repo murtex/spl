@@ -18,7 +18,7 @@ ti = linspace( 0, L, N ); % discrete time values
 	% -----------------------------------------------------------------------
 	% compute powers (linear and logarithmic)
 	% -----------------------------------------------------------------------
-Pi = (xi .* xi);
+Pi = (xi .* xi) / N;
 PidB = 10 * log10( Pi );
 
 	% -----------------------------------------------------------------------
@@ -50,6 +50,8 @@ ylim( [-1, 1] * 1.1 );
 plot( ti, xi, ... % plot linear waveform
 	'Color', 'blue', 'LineWidth', 2 );
 
+print( fig1, 'linear.eps', '-depsc2' );
+
 	% -----------------------------------------------------------------------
 	% plot logarithmic/decibel scale
 	% THIS PART IS NOT IMPORTANT FOR FOLLOWING THE LECTURE!
@@ -74,11 +76,12 @@ xlabel( 'time in seconds' );
 ylabel( 'power' );
 
 xlim( [0, L] ); % set axes
-minPidB = min( PidB(~isinf( PidB )) );
-ylim( [minPidB, -0.1 * minPidB] );
+ylim( [min( PidB ), 0] );
 
 plot( ti, PidB, ... % plot logarithmic power
 	'Color', 'blue', 'LineWidth', 2 );
+
+print( fig2, 'decibel.eps', '-depsc2' );
 
 warning( ws );
 

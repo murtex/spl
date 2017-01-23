@@ -16,7 +16,7 @@ nS = 3; % bits per sample, EXERCISE!
 
 N = floor( L * fS ); % number of samples
 ti = (0:N-1) / fS; % quantized time values
-xi = round( 2^(nS-1) * x( ti ) ) / 2^(nS-1); % quantized amplitudes
+xi = round( (2^(nS-1)-1) * x( ti ) ) / (2^(nS-1)-1); % quantized amplitudes
 
 	% -----------------------------------------------------------------------
 	% reconstruct the signal from qunatization (Whittaker-Shannon)
@@ -72,6 +72,8 @@ h = legend( ... % show legend
 	{sprintf( 'continuous sine (%.1fHz)', f ), sprintf( 'quantization (%.1fHz, %dbit)', fS, nS )}, ...
 	'Location', 'southeast' );
 set( h, 'Color', [0.9825, 0.9825, 0.9825] );
+
+print( fig1, 'sampling_ad.eps', '-depsc2' );
 	
 	% -----------------------------------------------------------------------
 	% plot D/A conversion
@@ -111,3 +113,4 @@ h = legend( ... % show legend
 	'Location', 'southeast' );
 set( h, 'Color', [0.9825, 0.9825, 0.9825] );
 
+print( fig2, 'sampling_da.eps', '-depsc2' );
